@@ -1,4 +1,4 @@
-name: Build Layered Standard XCP
+name: Build Layered Standard DAE
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
     - name: Validate examples
       run: python lint.py
 
-  build-ls-xcp:
+  build-ls-dae:
     name: Build Layered Standard DAE
     runs-on: ubuntu-latest
     steps:
@@ -52,10 +52,10 @@ jobs:
         cp schema/*.xsd build/schema
         cp docs/images/favicon.ico build/images
         cp docs/images/*.svg build/images
-    - name: archive layered standard XCP
+    - name: archive layered standard DAE
       uses: actions/upload-artifact@v4
       with:
-        name: FMI-LS-XCP
+        name: FMI-LS-DAE
         path: build/*
         if-no-files-found: error
     - name: extract branch name

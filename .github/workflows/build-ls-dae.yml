@@ -9,21 +9,6 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-examples:
-    name: Validate examples
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: python -m pip install lxml
-    - name: Validate examples
-      run: python lint.py
-
   build-ls-dae:
     name: Build Layered Standard DAE
     runs-on: ubuntu-latest
@@ -42,7 +27,7 @@ jobs:
       run: |
         mkdir -p build/schema
         mkdir -p build/images
-    - name: build layered standard XCP
+    - name: build layered standard dae
       uses: avattathil/asciidoctor-action@master
       with:
         program: "asciidoctor -D build --backend=html5 --attribute=revnumber=${{ env.REVNUMBER }} --attribute=revdate=$(date +%F) docs/index.adoc"

@@ -1,0 +1,72 @@
+name: Build Layered Standard XCP
+
+on:
+  push:
+    branches-ignore: [ 'temp/*' ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-examples:
+    name: Validate examples
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: python -m pip install lxml
+    - name: Validate examples
+      run: python lint.py
+
+  build-ls-xcp:
+    name: Build Layered Standard DAE
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: Generate revnumber
+      run: |
+        [[ $GITHUB_REF_TYPE == "tag" ]] && REVNUMBER=${GITHUB_REF:11} || REVNUMBER=${GITHUB_SHA:0:7}
+        echo GITHUB_SHA:      $GITHUB_SHA
+        echo GITHUB_REF_TYPE: $GITHUB_REF_TYPE
+        echo GITHUB_REF:      $GITHUB_REF
+        echo REVNUMBER:       $REVNUMBER
+        echo "REVNUMBER=$REVNUMBER" >> $GITHUB_ENV
+    - name: Create build directory
+      run: |
+        mkdir -p build/schema
+        mkdir -p build/images
+    - name: build layered standard XCP
+      uses: avattathil/asciidoctor-action@master
+      with:
+        program: "asciidoctor -D build --backend=html5 --attribute=revnumber=${{ env.REVNUMBER }} --attribute=revdate=$(date +%F) docs/index.adoc"
+    - name: Copy resources
+      run: |
+        cp LICENSE.txt build
+        cp schema/*.xsd build/schema
+        cp docs/images/favicon.ico build/images
+        cp docs/images/*.svg build/images
+    - name: archive layered standard XCP
+      uses: actions/upload-artifact@v4
+      with:
+        name: FMI-LS-XCP
+        path: build/*
+        if-no-files-found: error
+    - name: extract branch name
+      id: extract_branch
+      shell: bash
+      run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+    - name: deploy
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: peaceiris/actions-gh-pages@v3.9.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build
+        destination_dir: ${{ steps.extract_branch.outputs.branch }}
+        enable_jekyll: true

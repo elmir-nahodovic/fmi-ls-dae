@@ -1,0 +1,36 @@
+= FMI Layered Standard for DAE (FMI-LS-DAE)
+:sectnums:
+:sectnumlevels: 5
+:toc: left
+:toc-title: Contents
+:toclevels: 5
+:xrefstyle: short
+:docinfo: shared
+:stylesheet: fmi-spec.css
+:stem: latexmath
+:source-highlighter: highlightjs
+:nofooter:
+:favicon: images/favicon.ico
+:revdate: 30.09.2025
+:revnumber: 0.0.0
+:icons: font
+
+
+{empty} +
+{empty}
+
+Copyright (C) 2025 The Modelica Association Project FMI.
+
+This document is licensed under the Attribution-ShareAlike 4.0 International license.
+The code is released under the 2-Clause BSD License.
+The licenses text can be found in the https://raw.githubusercontent.com/modelica/fmi-ls-xcp/main/LICENSE.txt[LICENSE.txt] file that accompanies this distribution.
+
+{empty}
+
+== Introduction
+
+=== Intent of this Document
+
+[bibliography]
+== References
+

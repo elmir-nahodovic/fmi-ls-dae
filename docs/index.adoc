@@ -5,8 +5,8 @@
 :toc-title: Contents
 :toclevels: 5
 :xrefstyle: short
-:docinfo: shared
-:stylesheet: fmi-spec.css
+:docinfodir: theme/docinfo
+:stylesheet: theme/css/modelica.css
 :stem: latexmath
 :source-highlighter: highlightjs
 :nofooter:
@@ -14,24 +14,19 @@
 :revdate: 30.09.2025
 :revnumber: 0.0.0
 :icons: font
-
+:website-url: https://fmi-standard.org/
+:repo-url: https://github.com/modelica/fmi-ls-dae
+:logo: FMI
 
 {empty} +
 {empty}
 
-Copyright (C) 2025 The Modelica Association Project FMI.
-
-This document is licensed under the Attribution-ShareAlike 4.0 International license.
-The code is released under the 2-Clause BSD License.
-The licenses text can be found in the https://raw.githubusercontent.com/modelica/fmi-ls-xcp/main/LICENSE.txt[LICENSE.txt] file that accompanies this distribution.
+include::0____preamble.adoc[]
 
 {empty}
 
-== Introduction
+include::1____introduction.adoc[]
 
-=== Intent of this Document
-     
+include::2____common_concepts.adoc[]
 
-[bibliography]
-== References
-
+include::4____literature.adoc[]

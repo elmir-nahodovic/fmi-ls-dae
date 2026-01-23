@@ -1,6 +1,8 @@
 # generated files
 *.html
 *.pdf
+docs/stem-*.png
+docs/stem-*.svg
 
 # PyCharm projects
 .idea/
@@ -18,5 +20,7 @@ build/
 *.bat
 
 # custom vscode files
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/extensions.json
 *.code-workspace

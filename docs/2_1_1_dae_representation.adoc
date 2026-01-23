@@ -1,0 +1,28 @@
+:stem: latexmath
+
+==== DAE representation
+
+There are different forms od DAEs
+
+[implicit-dae]
+===== Implicit DAE
+
+[latexmath]
+++++
+F(\dot{x}, x, t) = 0
+++++
+
+
+[semi-explicit-dae]
+===== Semi-Explicit DAE
+
+[latexmath]
+++++
+\begin{split}
+\dot{x} & = f(x, s, t)    \\
+0       & = g^1 (x, s, t) \\
+0       & = g^2 (x, s, t) \\
+0       & = g^3 (x, s, t) \\
+        & \vdots
+\end{split}
+++++

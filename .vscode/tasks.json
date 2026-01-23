@@ -1,0 +1,100 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-doc-pdf",
+      "type": "process",
+      "command": "asciidoctor-pdf",
+      "args": [
+        "--base-dir",
+        "${workspaceFolder}/docs",
+        "--destination-dir",
+        "$${workspaceFolder}/build",
+        "--failure-level",
+        "WARN",
+        "-r",
+        "asciidoctor-mathematical",
+        "--verbose",
+        "docs/index.adoc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false,
+      }
+    },
+    {
+      "label": "build-doc-html",
+      "type": "process",
+      "command": "asciidoctor",
+      "args": [
+        "asciidoctor",
+        "--base-dir",
+        "--destination-dir",
+        "$${workspaceFolder}/build",
+        "${workspaceFolder}/docs",
+        "--failure-level",
+        "WARN",
+        "--verbose",
+        "docs/index.adoc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false,
+      }
+    },
+    {
+      "label": "build-doc-docker-pdf",
+      "type": "process",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-it",
+        "-v",
+        "${workspaceFolder}:/documents",
+        "asciidoctor/docker-asciidoctor",
+        "asciidoctor-pdf",
+        "--base-dir",
+        "/documents/docs",
+        "--destination-dir",
+        "/documents/build",
+        "--failure-level",
+        "WARN",
+        "-r",
+        "asciidoctor-mathematical",
+        "--verbose",
+        "docs/index.adoc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      }
+    },
+    {
+      "label": "build-doc-docker-html",
+      "type": "process",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-it",
+        "-v",
+        "${workspaceFolder}:/documents",
+        "asciidoctor/docker-asciidoctor",
+        "asciidoctor",
+        "--base-dir",
+        "/documents/docs",
+        "--destination-dir",
+        "/documents/build",
+        "--failure-level",
+        "WARN",
+        "--verbose",
+        "docs/index.adoc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false,
+      }
+    }
+  ]
+}

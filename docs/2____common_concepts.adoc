@@ -1,0 +1,3 @@
+== Common Concepts
+
+include::2_1___mathematical_notation.adoc[]

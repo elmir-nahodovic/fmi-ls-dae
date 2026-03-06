@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>FMI Layered Standard for DAE (FMI-LS-DAE)</h1>
 <div class="details">
-<span id="revnumber">version bed5823,</span>
+<span id="revnumber">version f308270,</span>
 <span id="revdate">2026-03-06</span>
 </div>
 <div id="toc" class="toc2">
@@ -1637,13 +1637,13 @@ Otherwise the formulation depends on the knowns defined by the given value refer
 <p>Consider the following index 2 DAE system:</p>
 </div>
 <div class="paragraph">
-<p>\(C_1\frac{dx_1}{dt} + y = 0\)</p>
+<p>\(r_1 = C_1\frac{dx_1}{dt} + y = 0\)</p>
 </div>
 <div class="paragraph">
-<p>\(C_2\frac{dx_2}{dt} - y + 1 = 0\)</p>
+<p>\(r_2 = C_2\frac{dx_2}{dt} - y + 1 = 0\)</p>
 </div>
 <div class="paragraph">
-<p>\(x_1 - x_2 = 0\)</p>
+<p>\(r_3 = x_1 - x_2 = 0\)</p>
 </div>
 <div class="paragraph">
 <p>Assume it is exported as a DAE FMU with the following variables:</p>
@@ -1793,7 +1793,7 @@ Otherwise the formulation depends on the knowns defined by the given value refer
 </div>
 </div>
 <div class="paragraph">
-<p>The API for partial derivative, <code>GetDirectionalDerivative</code> and/or <code>GetAdjointDerivative</code> could be with this structure to apply the dummy derivatives algorithm, or the index 2 constraint can serve as a projection constraint when integrating the index 1 formulation.</p>
+<p>The API for partial derivative, <code>GetDirectionalDerivative</code> and/or <code>GetAdjointDerivative</code> could be used with this structure to apply the dummy derivatives algorithm, or the index 2 constraint can serve as a projection constraint when integrating the index 1 formulation.</p>
 </div>
 </div>
 </div>

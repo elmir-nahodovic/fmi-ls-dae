@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>FMI Layered Standard for DAE (FMI-LS-DAE)</h1>
 <div class="details">
-<span id="revnumber">version f308270,</span>
+<span id="revnumber">version af6be40,</span>
 <span id="revdate">2026-03-06</span>
 </div>
 <div id="toc" class="toc2">
@@ -1386,7 +1386,7 @@ It defines the <a href="#model-dependencies">dependencies</a> between variables.
 <p>Ordered list of all outputs, in other words, a list of value references where every corresponding variable must have <a href="#causality">[causality]</a> = <a href="#output">[output]</a> (and every variable with <a href="#causality">[causality]</a> = <a href="#output">[output]</a> must be listed here).
 Attribute <a href="#dependencies"><code>dependencies</code></a> defines the dependencies of the <a href="#output"><code>outputs</code></a> from the knowns after the <a href="#InitializationMode">[InitializationMode]</a>.
 The functional dependency is defined as:<br>
-\({(\mathbf{y}_c, \mathbf{y}_d) := \mathbf{f}_{\mathit{output}}(\mathbf{x}_c, , \mathbf{z}_c, \mathbf{u}_c, \mathbf{u}_d, t, \mathbf{p})}\)</p>
+\({(\mathbf{y}_c, \mathbf{y}_d) := \mathbf{f}_{\mathit{output}}(\mathbf{x}_c, \mathbf{z}_c, \mathbf{u}_c, \mathbf{u}_d, t, \mathbf{p})}\)</p>
 </div></div></td>
 </tr>
 <tr>
@@ -1532,7 +1532,7 @@ If <a href="#dependenciesKind"><code>dependenciesKind</code></a> is not present,
 Otherwise, the corresponding known \({\mathbf{v}_{\mathit{known},i}}\) enters the equation as:</p>
 </div>
 <div class="paragraph">
-<p><code>= dependent</code>: no particular structure, \({{\mathbf{f}(..,\ \mathbf{v}}_{\mathit{known},i}},..)\)</p>
+<p><code>= dependent</code>: no particular structure, \({{\mathbf{f}(\ldots,\ \mathbf{v}}_{\mathit{known},i}},\ldots)\)</p>
 </div>
 <div class="paragraph">
 <p>The following <a href="#dependenciesKind"><code>dependenciesKind</code></a> is only allowed for floating point \({\mathbf{v}_{\mathit{unknown}}}\):</p>

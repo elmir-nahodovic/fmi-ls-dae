@@ -15,7 +15,7 @@ Two additional elements - `<AlgebraicVariables>` and `<ModelStructure>` - are in
 |Description
 
 |<<AlgebraicVariables>>
-|Ordered list of all <<algebraic,algebraic variables>> exposed for the DAE formulation.
+|List of all <<algebraic,algebraic variables>> exposed for the DAE formulation.
 
 |<<ModelStructure>>
 |Defines the structure of the DAE formulation for the model.

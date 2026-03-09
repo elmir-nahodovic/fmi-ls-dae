@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>FMI Layered Standard for DAE (FMI-LS-DAE)</h1>
 <div class="details">
-<span id="revnumber">version 98c46af,</span>
+<span id="revnumber">version 951e943,</span>
 <span id="revdate">2026-03-09</span>
 </div>
 <div id="toc" class="toc2">
@@ -1249,7 +1249,7 @@ Furthermore, the dependency of the unknowns from the knowns (as described in <a 
 <div class="sect2">
 <h3 id="AlgebraicVariables">4.1. Algebraic variables</h3>
 <div class="paragraph">
-<p>The element <code>&lt;AlgebraicVariables&gt;</code> defines the ordered list of the algebraic variables.</p>
+<p>The element <code>&lt;AlgebraicVariables&gt;</code> defines the list of the algebraic variables.</p>
 </div>
 <table id="table-algebraicvariables-details" class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 4. AlgebraicVariables elements.</caption>
@@ -1267,7 +1267,7 @@ Furthermore, the dependency of the unknowns from the knowns (as described in <a 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>AlgebraicVariable</code></p></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>The ordered list of all algebraic variables present in the <code>ModelVariables</code> element of the modelDescription.xml.</p>
+<p>The list of all algebraic variables present in the <code>ModelVariables</code> element of the modelDescription.xml.</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -1304,7 +1304,7 @@ Furthermore, the dependency of the unknowns from the knowns (as described in <a 
 It defines the <a href="#model-dependencies">dependencies</a> between variables. The <code>&lt;ModelStructure&gt;</code> element is extended with an additional element - <a href="#Residual"><code>&lt;Residual&gt;</code></a> - and the optional dependencies can now include algebraic variables.</p>
 </div>
 <div class="paragraph">
-<p>An FMU that follows this layered standard must expose all residuals in order in <a href="#Residual"><code>&lt;Residual&gt;</code></a>.</p>
+<p>An FMU that follows this layered standard must expose all residuals with the <a href="#Residual"><code>&lt;Residual&gt;</code></a>.</p>
 </div>
 <div class="paragraph">
 <p>It should be noted that the ModelStructure below is not a straight extension of the ModelStructure from the core standard, since it e.g. does not specify how the elements <code>ClockedState</code> or <code>EventIndicator</code> are affected by the DAE-formulation. That is also why some elements in <a href="#table-model-structure-elements">Table 6</a> are defined in a similar way to the core standard, with the exception that references to concepts in co-simulation, clocks, and events are excluded. Moreover, notes and examples that are already present in the core standard are omitted here.</p>

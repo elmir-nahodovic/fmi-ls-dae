@@ -5,7 +5,7 @@ This layered standard requires the use of a layered standard manifest file and i
 
 [Add figure here] shows the root element `fmiLayeredStandardManifest`.
 
-Two additional elements - `<AlgebraicVariables>` and `<ModelStructure>` - are included in the layered standard manifest file to describe the DAE formulation.
+Two additional elements - <<AlgebraicVariables>> and <<ModelStructure>> - are included in the layered standard manifest file to describe the DAE formulation.
 
 .`fmiModelDescription` element details.
 [[table-schema-fmiModelDescription]]
@@ -15,11 +15,11 @@ Two additional elements - `<AlgebraicVariables>` and `<ModelStructure>` - are in
 |Description
 
 |<<AlgebraicVariables>>
-|List of all <<AlgebraicVariable>> exposed for the DAE formulation.
+|List of all <<AlgebraicVariable, algebraic variables>> exposed for the DAE formulation.
 
 |<<ModelStructure>>
 |Defines the structure of the DAE formulation for the model.
-Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[state], and the initial unknowns (the unknowns during https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]) are *re*-defined and overwrite the corresponding `<ModelStructure>` present in the `modelDescription.xml`, with the addition of the  <<Residual, `residuals`>> element.
+Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[state], and the initial unknowns (the unknowns during https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]) are *re*-defined and overwrite the corresponding https://fmi-standard.org/docs/3.0.2/#ModelStructure[ModelStructure] present in the `modelDescription.xml`, with the addition of the  <<Residual, residuals>> element.
 The <<AlgebraicVariables,algebraic variables>> can now also be included as dependencies.
 
 |<<Annotations>>
@@ -56,7 +56,7 @@ The XML attributes of `<fmiLayeredStandardManifest>` are:
 
 === Algebraic variables [[AlgebraicVariables, `<AlgebraicVariables>`]]
 
-The element `<AlgebraicVariables>` defines the list of the algebraic variables.
+The element <<AlgebraicVariables>> defines the list of the algebraic variables.
 
 .AlgebraicVariables elements.
 [[table-algebraic-variables-details]]
@@ -66,7 +66,7 @@ The element `<AlgebraicVariables>` defines the list of the algebraic variables.
 |Description
 
 |`AlgebraicVariable`
-|The list of all <<AlgebraicVariable>> present in the `ModelVariables` element of the modelDescription.xml.
+|An <<AlgebraicVariable>> present in the `ModelVariables` element of the modelDescription.xml.
 |====
 
 [[AlgebraicVariable, `<AlgebraicVariable>`]]
@@ -85,16 +85,16 @@ Each <<AlgebraicVariable>> has only one attribute defining the value reference.
 
 === Model Structure [[ModelStructure,`<ModelStructure>`]]
 
-The structure of the model for the DAE-formulation is defined in element `<ModelStructure>`.
+The structure of the model for the DAE-formulation is defined in element <<ModelStructure>>.
 It defines the <<model-dependencies,dependencies>> between variables.
-The `<ModelStructure>` element is extended with an additional element - <<Residual>> - and the optional dependencies can now include algebraic variables.
+The <<ModelStructure>> element is extended with an additional element - <<Residual>> - and the optional dependencies can now include algebraic variables.
 
 An FMU that follows this layered standard must expose all residuals with the <<Residual>>.
 
-NOTE: The `<ModelStructure>` defined here extends the one from the core FMI standard.
-All elements defined there (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics, with the addition that each element's `dependencies` attribute may now also reference algebraic variables (variables listed in the `<<AlgebraicVariables>>` element).
+NOTE: The <<ModelStructure>> defined here extends the one from the core FMI standard.
+All elements defined there (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics, with the addition that each element's `dependencies` attribute may now also reference <<AlgebraicVariable, algebraic variables>>.
 
-The `<ModelStructure>` element is extended with one additional element, <<Residual>>, described below.
+The <<ModelStructure>> element is extended with one additional element, <<Residual>>, described below.
 
 .Additional ModelStructure element.
 [#table-model-structure-dae-element]
@@ -150,7 +150,7 @@ Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in https://fmi-standard.org/doc
 
 * algebraic variables (variables listed in the `<<AlgebraicVariables>>` element),
 
-* https://fmi-standard.org/docs/3.0.2/#independent[indipendent] variable (usually time; https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#independent[indipendent]).
+* https://fmi-standard.org/docs/3.0.2/#independent[independent] variable (usually time; https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#independent[independent]).
 
 If `dependencies` is not present, it must be assumed that the formulation depends on all knowns.
 If `dependencies` is present as an empty list, the formulation depends on none of the knowns.
@@ -167,12 +167,12 @@ NOTE: TODO
 
 ---
 
-=== Getting Partial Derivatives
+==== Getting Partial Derivatives
 
 The partial derivative API functions https://fmi-standard.org/docs/3.0.2/#fmi3GetDirectionalDerivative[fmi3GetDirectionalDerivative] and https://fmi-standard.org/docs/3.0.2/#fmi3GetAdjointDerivative[fmi3GetAdjointDerivative] are used as defined in the core FMI standard, with the following extensions for DAE FMUs:
 
 * Algebraic variables (variables listed in `<<AlgebraicVariables>>`) may appear as knowns for any unknown.
-* When the unknown is a <<Residual>> (i.e., a residual variable), continuous state derivatives may additionally appear as knowns.
+* When the unknown is a <<Formulation>> in a <<Residual>>(i.e., a residual variable), continuous state derivatives may additionally appear as knowns.
 
 ==== Hello World DAE Example
 

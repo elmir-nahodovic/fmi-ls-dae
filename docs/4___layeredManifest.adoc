@@ -15,12 +15,12 @@ Two additional elements - `<AlgebraicVariables>` and `<ModelStructure>` - are in
 |Description
 
 |<<AlgebraicVariables>>
-|List of all <<algebraic,algebraic variables>> exposed for the DAE formulation.
+|List of all <<AlgebraicVariable>> exposed for the DAE formulation.
 
 |<<ModelStructure>>
 |Defines the structure of the DAE formulation for the model.
-Especially, the ordered lists of <<output,`outputs`>>, continuous-time <<state,states>>, and the initial unknowns (the unknowns during <<InitializationMode>>) are *re*-defined and overwrite the corresponding `<ModelStructure>` present in the `modelDescription.xml`, with the addition of the  <<residuals, `residuals`>> element.
-The <<algebraic,algebraic variables>> can now also be included as dependencies.
+Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[state], and the initial unknowns (the unknowns during https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]) are *re*-defined and overwrite the corresponding `<ModelStructure>` present in the `modelDescription.xml`, with the addition of the  <<Residual, `residuals`>> element.
+The <<AlgebraicVariables,algebraic variables>> can now also be included as dependencies.
 
 |<<Annotations>>
 |Optional annotations for the top-level element.
@@ -55,20 +55,22 @@ The XML attributes of `<fmiLayeredStandardManifest>` are:
 |====
 
 === Algebraic variables [[AlgebraicVariables, `<AlgebraicVariables>`]]
+
 The element `<AlgebraicVariables>` defines the list of the algebraic variables.
 
 .AlgebraicVariables elements.
-[[table-algebraicvariables-details]]
+[[table-algebraic-variables-details]]
 [cols="1,5a", options="header"]
 |====
 |Element
 |Description
 
 |`AlgebraicVariable`
-|The list of all algebraic variables present in the `ModelVariables` element of the modelDescription.xml.
+|The list of all <<AlgebraicVariable>> present in the `ModelVariables` element of the modelDescription.xml.
 |====
 
-Each `<<AlgebraicVariable>>` has only one attribute defining the value reference.
+[[AlgebraicVariable, `<AlgebraicVariable>`]]
+Each <<AlgebraicVariable>> has only one attribute defining the value reference.
 
 .Attributes to <<AlgebraicVariable>> element.
 [[table-alg-details]]
@@ -84,11 +86,13 @@ Each `<<AlgebraicVariable>>` has only one attribute defining the value reference
 === Model Structure [[ModelStructure,`<ModelStructure>`]]
 
 The structure of the model for the DAE-formulation is defined in element `<ModelStructure>`.
-It defines the <<model-dependencies,dependencies>> between variables. The `<ModelStructure>` element is extended with an additional element - <<Residual>> - and the optional dependencies can now include algebraic variables.
+It defines the <<model-dependencies,dependencies>> between variables.
+The `<ModelStructure>` element is extended with an additional element - <<Residual>> - and the optional dependencies can now include algebraic variables.
 
 An FMU that follows this layered standard must expose all residuals with the <<Residual>>.
 
-NOTE: The `<ModelStructure>` defined here extends the one from the core FMI standard. All elements defined there (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics, with the addition that each element's `dependencies` attribute may now also reference algebraic variables (variables listed in the `<<AlgebraicVariables>>` element).
+NOTE: The `<ModelStructure>` defined here extends the one from the core FMI standard.
+All elements defined there (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics, with the addition that each element's `dependencies` attribute may now also reference algebraic variables (variables listed in the `<<AlgebraicVariables>>` element).
 
 The `<ModelStructure>` element is extended with one additional element, <<Residual>>, described below.
 
@@ -101,7 +105,12 @@ The `<ModelStructure>` element is extended with one additional element, <<Residu
 
 |`Residual`
 |[[Residual,`<Residual>`]]
-Ordered list of residual equations (constraints). Each `<Residual>` contains one or more `<<Formulation>>` child elements. When a single `<Formulation>` is present, it defines the residual equation directly. When multiple `<Formulation>` elements are present within the same `<Residual>`, they represent the same constraint differentiated to successive orders. This grouping tells the importer that the equations are structurally related, which can e.g. be used to perform index reduction with dummy derivatives or projection methods. Note that each formulation inside one residual element must reference unique variables in the FMU.
+Ordered list of residual equations (constraints).
+Each `<Residual>` contains one or more `<<Formulation>>` child elements.
+When a single `<Formulation>` is present, it defines the residual equation directly.
+When multiple `<Formulation>` elements are present within the same `<Residual>`, they represent the same constraint differentiated to successive orders.
+This grouping tells the importer that the equations are structurally related, which can e.g. be used to perform index reduction with dummy derivatives or projection methods.
+Note that each formulation inside one residual element must reference unique variables in the FMU.
 
 The functional dependency is defined as: +
 latexmath:[{0 := \mathbf{f}_{\mathit{res}}(\mathbf{x}_c, \mathbf{z}_c, \mathbf{u}_c, t, \mathbf{p})}]
@@ -126,40 +135,47 @@ Each `<<Formulation>>` element within a `<<Residual>>` has the following attribu
 Optional attribute indicating the DAE index of the original constraint, i.e., how many times this particular equation must be differentiated in order to solve for a particular derivative.
 
 |`dependencies`
-|Optional attribute defining the algebraic dependencies as a list of value references of the knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] that this formulation directly depends on.
+|[[model-dependencies]]
+Optional attribute defining the algebraic dependencies as a list of value references of the knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] that this formulation directly depends on.
 
-Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in <<ContinuousTimeMode>> (ME) for `<<Formulation>>` elements are: +
+Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in https://fmi-standard.org/docs/3.0.2/#table-math-model-exchange[ContinuousTimeMode] (ME) for `<<Formulation>>` elements are: +
 
-* inputs (variables with <<causality>> = <<input>>),
+* inputs (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#input[input]),
 
 * continuous states,
 
 * continuous state derivatives,
 
-* parameters (variables with <<causality>> = <<parameter>>),
+* parameters (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#parameter[parameter]),
 
 * algebraic variables (variables listed in the `<<AlgebraicVariables>>` element),
 
-* <<independent>> variable (usually time; <<causality>> = <<independent>>).
+* https://fmi-standard.org/docs/3.0.2/#independent[indipendent] variable (usually time; https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#independent[indipendent]).
 
 If `dependencies` is not present, it must be assumed that the formulation depends on all knowns.
 If `dependencies` is present as an empty list, the formulation depends on none of the knowns.
 Otherwise the formulation depends on the knowns defined by the given value references.
 
 |`dependenciesKind`
-|See the description of <<dependenciesKind>> in <<table-output-der-initialUnknown-details>> of the core FMI standard. TODO: Extend to help importer?
+|See the description of https://fmi-standard.org/docs/3.0.2/#dependenciesKind[`dependenciesKind`] in the core FMI standard.
+TODO: Extend to help importer?
 |====
+
+=== Annotations
+
+NOTE: TODO
 
 ---
 
 === Getting Partial Derivatives
 
-The partial derivative API functions <<fmi3GetDirectionalDerivative>> and <<fmi3GetAdjointDerivative>> are used as defined in the core FMI standard, with the following extensions for DAE FMUs:
+The partial derivative API functions https://fmi-standard.org/docs/3.0.2/#fmi3GetDirectionalDerivative[fmi3GetDirectionalDerivative] and https://fmi-standard.org/docs/3.0.2/#fmi3GetAdjointDerivative[fmi3GetAdjointDerivative] are used as defined in the core FMI standard, with the following extensions for DAE FMUs:
 
 * Algebraic variables (variables listed in `<<AlgebraicVariables>>`) may appear as knowns for any unknown.
 * When the unknown is a <<Residual>> (i.e., a residual variable), continuous state derivatives may additionally appear as knowns.
 
 ==== Hello World DAE Example
+
 Below outlines how to map the different forms of the Hello World DAE Example to the manifest file detailed here.
 
 ===== Hello World DAE - Fully-Implicit DAE
@@ -212,7 +228,8 @@ Assume the FMU has these variables:
 |latexmath:[F_3] | 10
 |====
 
-In this case `x_2` and `x_3` do not appear differentiated in any equations, hence they are classified as algebraic (element of `<<AlgebraicVariables>>`). An example of the `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
+In this case `x_2` and `x_3` do not appear differentiated in any equations, hence they are classified as algebraic (element of `<<AlgebraicVariables>>`).
+An example of the `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
 
 ```xml
 <AlgebraicVariables>
@@ -288,7 +305,8 @@ Assume the FMU has the following variables:
 |latexmath:[g_2] | 7
 |====
 
-This case contains the same algebraic variables. However this time the the derivative of `x` is given in explicit form in the `ModelStructure`:
+This case contains the same algebraic variables.
+However this time the the derivative of `x` is given in explicit form in the `ModelStructure`:
 
 ```xml
 <AlgebraicVariables>
@@ -297,10 +315,10 @@ This case contains the same algebraic variables. However this time the the deriv
 </AlgebraicVariables>
 
 <ModelStructure>
-  <ContinuousStateDerivative <!-- dot(x) = y1 -->
+  <ContinuousStateDerivative
     valueReference="5"
     dependencies="3"
-    dependenciesKind="fixed"/>
+    dependenciesKind="fixed"/> <!-- dot(x) = y1 -->
   <Residual> <!-- g1: y1 + 2*y2 - x = 0 -->
     <Formulation
       valueReference="6"
@@ -386,7 +404,10 @@ Assume it is exported as a DAE FMU with the following variables:
 |latexmath:[\frac{dr_3}{dt}] | 9
 |====
 
-**Case 1:** No structural analysis. The importer is responsible to figure out how to solve the system:
+**Case 1:**
+No structural analysis.
+The importer is responsible to figure out how to solve the system:
+
 ```xml
 <ModelStructure>
   <Residual> <!-- r1 -->
@@ -410,7 +431,10 @@ Assume it is exported as a DAE FMU with the following variables:
 </ModelStructure>
 ```
 
-**Case 2:** The FMU additionally indicates that latexmath:[r_3] is a constraint of index 2, i.e., it must be differentiated twice to obtain an index 1 system. This gives the importer structural information to know to apply a solver able to handle index 2 problems:
+**Case 2:**
+The FMU additionally indicates that latexmath:[r_3] is a constraint of index 2, i.e., it must be differentiated twice to obtain an index 1 system.
+This gives the importer structural information to know to apply a solver able to handle index 2 problems:
+
 ```xml
 <ModelStructure>
   <Residual> <!-- r1 -->
@@ -435,7 +459,9 @@ Assume it is exported as a DAE FMU with the following variables:
 </ModelStructure>
 ```
 
-**Case 3:** The FMU exposes both latexmath:[r_3] and its time derivative latexmath:[\dot{r}_3] grouped within the same `<Residual>`, which indicates that these are the original constraint and its differentiated form. The importer can use this grouping to apply the dummy derivatives algorithm or use latexmath:[r_3] as a drift-correction projection when integrating the index 1 formulation:
+**Case 3:**
+The FMU exposes both latexmath:[r_3] and its time derivative latexmath:[\dot{r}_3] grouped within the same `<Residual>`, which indicates that these are the original constraint and its differentiated form.
+The importer can use this grouping to apply the dummy derivatives algorithm or use latexmath:[r_3] as a drift-correction projection when integrating the index 1 formulation:
 
 latexmath:[r_3 = x_1 - x_2 = 0]
 
@@ -455,16 +481,16 @@ latexmath:[\dot{r}_3 = \frac{dx_1}{dt} - \frac{dx_2}{dt} = 0]
       dependenciesKind="dependent dependent"/>
   </Residual>
   <Residual> <!-- r3 and its derivative, grouped as related formulations -->
-    <Formulation <!-- r3 -->
+    <Formulation
       index="2"
       valueReference="8"
       dependencies="1 2"
-      dependenciesKind="dependent dependent"/>
-    <Formulation <!-- der(r3) -->
+      dependenciesKind="dependent dependent"/> <!-- r3 -->
+    <Formulation
       index="1"
       valueReference="9"
       dependencies="4 5"
-      dependenciesKind="dependent dependent"/>
+      dependenciesKind="dependent dependent"/> <!-- der(r3) -->
   </Residual>
 </ModelStructure>
 ```

@@ -19,7 +19,7 @@ Two additional elements - <<AlgebraicVariables>> and <<ModelStructure>> - are in
 
 |<<ModelStructure>>
 |Defines the structure of the DAE formulation for the model.
-Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[state], and the initial unknowns (the unknowns during https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]) are *re*-defined and overwrite the corresponding https://fmi-standard.org/docs/3.0.2/#ModelStructure[ModelStructure] present in the `modelDescription.xml`, with the addition of the  <<Residual, residuals>> element.
+Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[state], and the initial unknowns (the unknowns during *https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]*) are *re*-defined and overwrite the corresponding https://fmi-standard.org/docs/3.0.2/#ModelStructure[ModelStructure] present in the `modelDescription.xml`, with the addition of the  <<Residual, residuals>> element.
 The <<AlgebraicVariables,algebraic variables>> can now also be included as dependencies.
 
 |<<Annotations>>
@@ -132,13 +132,13 @@ Each `<<Formulation>>` element within a `<<Residual>>` has the following attribu
 
 |`index`
 |[[index-formulation]]
-Optional attribute indicating the DAE index of the original constraint, i.e., how many times this particular equation must be differentiated in order to solve for a particular derivative.
+Optional attribute indicating the DAE index of the original constraint, i.e., how many times this particular equation needs to be differentiated in order to solve for a particular derivative.
 
 |`dependencies`
 |[[model-dependencies]]
 Optional attribute defining the algebraic dependencies as a list of value references of the knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] that this formulation directly depends on.
 
-Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in https://fmi-standard.org/docs/3.0.2/#table-math-model-exchange[ContinuousTimeMode] (ME) for `<<Formulation>>` elements are: +
+Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/docs/3.0.2/#ContinuousTimeMode[ContinuousTimeMode]* (ME) for `<<Formulation>>` elements are: +
 
 * inputs (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#input[input]),
 
@@ -171,8 +171,8 @@ NOTE: TODO
 
 The partial derivative API functions https://fmi-standard.org/docs/3.0.2/#fmi3GetDirectionalDerivative[fmi3GetDirectionalDerivative] and https://fmi-standard.org/docs/3.0.2/#fmi3GetAdjointDerivative[fmi3GetAdjointDerivative] are used as defined in the core FMI standard, with the following extensions for DAE FMUs:
 
-* Algebraic variables (variables listed in `<<AlgebraicVariables>>`) may appear as knowns for any unknown.
-* When the unknown is a <<Formulation>> in a <<Residual>>(i.e., a residual variable), continuous state derivatives may additionally appear as knowns.
+* Algebraic variables (variables listed in `<<AlgebraicVariables>>`) could appear as knowns for any unknown.
+* When the unknown is a <<Formulation>> in a <<Residual>>(i.e., a residual variable), continuous state derivatives could additionally appear as knowns.
 
 === Hello World DAE Example
 
@@ -432,7 +432,7 @@ The importer is responsible to figure out how to solve the system:
 ```
 
 **Case 2:**
-The FMU additionally indicates that latexmath:[r_3] is a constraint of index 2, i.e., it must be differentiated twice to obtain an index 1 system.
+The FMU additionally indicates that latexmath:[r_3] is a constraint of index 2, i.e., it needs to be be differentiated twice to obtain an index 1 system.
 This gives the importer structural information to know to apply a solver able to handle index 2 problems:
 
 ```xml

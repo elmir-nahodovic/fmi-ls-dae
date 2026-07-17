@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Install xmllint
         run: sudo apt-get install -y --no-install-recommends libxml2-utils
@@ -36,5 +36,8 @@ jobs:
       - name: Validate FMI-LS-DAE XSD manifest (well-formed)
         run: xmllint --noout schema/fmi3LayeredStandardDaeManifest.xsd
 
-      - name: Validate example XML files
-        run: find examples -name "*.xml" | xargs xmllint --noout --schema schema/fmi3LayeredStandardDaeManifest.xsd
+      - name: Validate FMI-LS-DAE manifest files
+        run: find . -name "fmi-ls-manifest*.xml" | xargs xmllint --noout --schema schema/fmi3LayeredStandardDaeManifest.xsd
+
+      - name: Validate modelDescription.xml files
+        run: find reference-FMUs -name "modelDescription.xml" | xargs xmllint --noout --schema fmi3-schema/fmi3ModelDescription.xsd

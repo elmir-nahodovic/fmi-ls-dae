@@ -479,8 +479,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>FMI Layered Standard for DAE (FMI-LS-DAE)</h1>
 <div class="details">
-<span id="revnumber">version 42e631a,</span>
-<span id="revdate">2026-06-11</span>
+<span id="revnumber">version 5cd461a,</span>
+<span id="revdate">2026-08-17</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Contents</div>
@@ -494,33 +494,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#common-concepts">2. Common Concepts</a>
 <ul class="sectlevel2">
-<li><a href="#mathematical-notation">Mathematical Notation</a>
+<li><a href="#mathematical-notation">2.1. Mathematical Notation</a>
 <ul class="sectlevel3">
-<li><a href="#dae-representation">DAE representation</a>
+<li><a href="#dae-representation">2.1.1. DAE representation</a>
 <ul class="sectlevel4">
-<li><a href="#fully-implicit-dae">Fully-Implicit DAE</a></li>
-<li><a href="#semi-explicit-index-1-hessenberg-index-1-dae">Semi-Explicit Index 1 / Hessenberg index 1 DAE</a></li>
-<li><a href="#relationship-between-fully-implicit-and-semi-explicit-dae">Relationship between fully-implicit and semi-explicit DAE</a></li>
-<li><a href="#semi-explicit-dae">Semi-Explicit DAE</a></li>
-<li><a href="#mass-matrix-dae">Mass matrix DAE</a></li>
-<li><a href="#linear-time-invariant-dae">Linear time-invariant DAE</a></li>
+<li><a href="#implicit-dae">2.1.1.1. Fully-Implicit DAE</a></li>
+<li><a href="#semi-explicit-index-1-dae">2.1.1.2. Semi-Explicit Index 1 / Hessenberg index 1 DAE</a></li>
+<li><a href="#relationship-fully-implicit-semi-explicit">2.1.1.3. Relationship between fully-implicit and semi-explicit DAE</a></li>
+<li><a href="#semi-explicit-dae">2.1.1.4. Semi-Explicit DAE</a></li>
+<li><a href="#mass-matrix-dae">2.1.1.5. Mass matrix DAE</a></li>
+<li><a href="#linear-time-invariant-dae">2.1.1.6. Linear time-invariant DAE</a></li>
 </ul>
 </li>
-<li><a href="#indices">Indices</a>
+<li><a href="#indices">2.1.2. Indices</a>
 <ul class="sectlevel4">
-<li><a href="#differential-index">Differential Index</a></li>
-<li><a href="#perturbation-index">Perturbation Index</a>
+<li><a href="#differential-index">2.1.2.1. Differential Index</a></li>
+<li><a href="#perturbation-index">2.1.2.2. Perturbation Index</a>
 <ul class="sectlevel5">
-<li><a href="#example-of-structural-singularity">Example of Structural Singularity</a></li>
+<li><a href="#example-structural-singularity">2.1.2.2.1. Example of Structural Singularity</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#hello-world-dae-example">Hello World DAE Example</a>
+<li><a href="#dae-example">2.1.3. Hello World DAE Example</a>
 <ul class="sectlevel4">
-<li><a href="#hello-world-dae-fully-implicit-dae">Hello World DAE - Fully-Implicit DAE</a></li>
-<li><a href="#hello-world-dae-semi-explicit-dae">Hello World DAE - Semi-Explicit DAE</a></li>
-<li><a href="#hello-world-dae-explicit-ode">Hello World DAE - Explicit ODE</a></li>
+<li><a href="#hello-world-dae-fully-implicit-dae">2.1.3.1. Hello World DAE - Fully-Implicit DAE</a></li>
+<li><a href="#hello-world-dae-semi-explicit-dae">2.1.3.2. Hello World DAE - Semi-Explicit DAE</a></li>
+<li><a href="#hello-world-dae-explicit-ode">2.1.3.3. Hello World DAE - Explicit ODE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#ode-to-dae-mode">2.2. Changing between ODE and DAE Mode</a>
+<ul class="sectlevel3">
+<li><a href="#enable-dae-mode-variable">2.2.1. The <code>enableDAEModeVariable</code> Structural Parameter</a></li>
+<li><a href="#entering-dae-mode">2.2.2. Entering DAE Mode</a>
+<ul class="sectlevel4">
+<li><a href="#at-instantiation-configuration-mode">2.2.2.1. At Instantiation (Configuration Mode)</a></li>
+<li><a href="#during-simulation-reconfiguration-mode">2.2.2.2. During Simulation (Reconfiguration Mode)</a></li>
 </ul>
 </li>
 </ul>
@@ -539,22 +550,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#layered-standard-manifest-file">4. Layered Standard Manifest File</a>
 <ul class="sectlevel2">
-<li><a href="#AlgebraicVariables">4.1. Algebraic variables</a></li>
-<li><a href="#ModelStructure">4.2. Model Structure</a>
+<li><a href="#EnableDAE">4.1. Enabling DAE mode</a></li>
+<li><a href="#AlgebraicVariables">4.2. Algebraic variables</a></li>
+<li><a href="#ModelStructure">4.3. Model Structure</a>
 <ul class="sectlevel3">
-<li><a href="#Formulation">4.2.1. Formulation</a></li>
+<li><a href="#Formulation">4.3.1. Formulation</a></li>
 </ul>
 </li>
-<li><a href="#annotations">4.3. Annotations</a></li>
-<li><a href="#getting-partial-derivatives">4.4. Getting Partial Derivatives</a></li>
-<li><a href="#hello-world-dae-example-2">4.5. Hello World DAE Example</a>
+<li><a href="#annotations">4.4. Annotations</a></li>
+<li><a href="#getting-partial-derivatives">4.5. Getting Partial Derivatives</a></li>
+<li><a href="#hello-world-dae-example">4.6. Hello World DAE Example</a>
 <ul class="sectlevel3">
-<li><a href="#hello-world-dae-fully-implicit-dae-2">4.5.1. Hello World DAE - Fully-Implicit DAE</a></li>
-<li><a href="#hello-world-dae-semi-explicit-dae-2">4.5.2. Hello World DAE - Semi-Explicit DAE</a></li>
-<li><a href="#hello-world-dae-explicit-ode-2">4.5.3. Hello World DAE - Explicit ODE</a></li>
+<li><a href="#hello-world-dae-fully-implicit-dae-2">4.6.1. Hello World DAE - Fully-Implicit DAE</a></li>
+<li><a href="#hello-world-dae-semi-explicit-dae-2">4.6.2. Hello World DAE - Semi-Explicit DAE</a></li>
+<li><a href="#hello-world-dae-explicit-ode-2">4.6.3. Hello World DAE - Explicit ODE</a></li>
 </ul>
 </li>
-<li><a href="#example-2-differentiated-formulations">4.6. Example 2 (differentiated formulations)</a></li>
+<li><a href="#example-2-differentiated-formulations">4.7. Example 2 (differentiated formulations)</a></li>
 </ul>
 </li>
 <li><a href="#references">References</a></li>
@@ -612,7 +624,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 <div class="ulist">
 <ul>
 <li>
-<p>This may improve accuracy due to better drift handling.</p>
+<p>This could improve accuracy due to better drift handling.</p>
 </li>
 </ul>
 </div>
@@ -622,7 +634,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 <div class="ulist">
 <ul>
 <li>
-<p>This may improve accuracy and avoid problems with different local and global error tolerances.</p>
+<p>This could improve accuracy and avoid problems with different local and global error tolerances.</p>
 </li>
 </ul>
 </div>
@@ -632,7 +644,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 <div class="ulist">
 <ul>
 <li>
-<p>This may improve the performance by usage of the sparseness.</p>
+<p>This could improve the performance by usage of the sparseness.</p>
 </li>
 </ul>
 </div>
@@ -642,7 +654,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 <div class="ulist">
 <ul>
 <li>
-<p>Connecting reduced ODE FMUs may lead globally to a non-solvable (singular) system but not for unreduced DAE FMUs.</p>
+<p>Connecting reduced ODE FMUs could lead globally to a non-solvable (singular) system but not for unreduced DAE FMUs.</p>
 </li>
 </ul>
 </div>
@@ -652,7 +664,40 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 </div>
 <div class="sect2">
 <h3 id="how-to-read-this-document">1.2. How to read this Document</h3>
-
+<div class="paragraph">
+<p>The standard document is in HTML allowing heavy use of in-document links: all state names, function names, many function arguments, XML elements and attributes are links to definitions or descriptions.</p>
+</div>
+<div class="paragraph">
+<p>In key parts of this document, non-normative examples are used to help understand the standard.</p>
+</div>
+<div class="paragraph">
+<p>Conventions used in this document:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Non-normative text is given like this:</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Especially examples are defined in this style.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="https://tools.ietf.org/html/rfc2119">RFC 2119</a> (regardless of formatting and capitalization).</p>
+</li>
+<li>
+<p>State machine states are formatted as <strong>bold</strong> link, e.g. <strong><a href="https://fmi-standard.org/docs/3.0.2/#InitializationMode">InitializationMode</a></strong>.</p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="overview">1.3. Overview</h3>
@@ -664,7 +709,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 <h2 id="common-concepts">2. Common Concepts</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="mathematical-notation">Mathematical Notation</h3>
+<h3 id="mathematical-notation">2.1. Mathematical Notation</h3>
 <table id="table-variable-types" class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Additional symbols for specific variable types.</caption>
 <colgroup>
@@ -685,7 +730,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 </tbody>
 </table>
 <div class="sect3">
-<h4 id="dae-representation">DAE representation</h4>
+<h4 id="dae-representation">2.1.1. DAE representation</h4>
 <div class="paragraph">
 <p>There are different forms of DAEs.</p>
 </div>
@@ -693,7 +738,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 <p>For simplicity discontinuous states are currently disregarded.</p>
 </div>
 <div class="sect4">
-<h5 id="fully-implicit-dae">Fully-Implicit DAE</h5>
+<h5 id="implicit-dae">2.1.1.1. Fully-Implicit DAE</h5>
 <div class="paragraph">
 <p>The generic <em>fully-implicit DAE</em>, or <em>implicit DAE</em>, formulation:</p>
 </div>
@@ -721,7 +766,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 </div>
 </div>
 <div class="sect4">
-<h5 id="semi-explicit-index-1-hessenberg-index-1-dae">Semi-Explicit Index 1 / Hessenberg index 1 DAE</h5>
+<h5 id="semi-explicit-index-1-dae">2.1.1.2. Semi-Explicit Index 1 / Hessenberg index 1 DAE</h5>
 <div class="paragraph">
 <p>The <em>semi-explicit index 1</em>, also called <em>Hessenberg index 1</em>, DAE representation</p>
 </div>
@@ -741,7 +786,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 </div>
 </div>
 <div class="sect4">
-<h5 id="relationship-between-fully-implicit-and-semi-explicit-dae">Relationship between fully-implicit and semi-explicit DAE</h5>
+<h5 id="relationship-fully-implicit-semi-explicit">2.1.1.3. Relationship between fully-implicit and semi-explicit DAE</h5>
 <div class="paragraph">
 <p>A fully implicit DAE</p>
 </div>
@@ -763,7 +808,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 </div>
 </div>
 <div class="sect4">
-<h5 id="semi-explicit-dae">Semi-Explicit DAE</h5>
+<h5 id="semi-explicit-dae">2.1.1.4. Semi-Explicit DAE</h5>
 <div class="paragraph">
 <p>The <em>semi-explicit DAE</em> representation</p>
 </div>
@@ -783,7 +828,7 @@ The license text can be found in the <a href="LICENSE.txt">LICENSE.txt</a> file 
 </div>
 </div>
 <div class="sect4">
-<h5 id="mass-matrix-dae">Mass matrix DAE</h5>
+<h5 id="mass-matrix-dae">2.1.1.5. Mass matrix DAE</h5>
 <div class="stemblock">
 <div class="content">
 \[M \dot{x}(t) = f(x(t), t)\]
@@ -818,7 +863,7 @@ g(x(t), y(t), t)
 </div>
 </div>
 <div class="sect4">
-<h5 id="linear-time-invariant-dae">Linear time-invariant DAE</h5>
+<h5 id="linear-time-invariant-dae">2.1.1.6. Linear time-invariant DAE</h5>
 <div class="stemblock">
 <div class="content">
 \[E \dot{x}(t) = Ax(t)\]
@@ -830,13 +875,13 @@ g(x(t), y(t), t)
 </div>
 </div>
 <div class="sect3">
-<h4 id="indices">Indices</h4>
+<h4 id="indices">2.1.2. Indices</h4>
 <div class="paragraph">
 <p>There are multiple, sometimes closely related, definitions of indices for DAE systems.
 Usually these indices are a measure of how far from an ODE the DAE is.</p>
 </div>
 <div class="sect4">
-<h5 id="differential-index">Differential Index</h5>
+<h5 id="differential-index">2.1.2.1. Differential Index</h5>
 <div class="paragraph">
 <p>The minimum number of times a DAE</p>
 </div>
@@ -853,7 +898,7 @@ Usually these indices are a measure of how far from an ODE the DAE is.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="perturbation-index">Perturbation Index</h5>
+<h5 id="perturbation-index">2.1.2.2. Perturbation Index</h5>
 <div class="paragraph">
 <p>The <em>perturbation index</em> measures the sensitivity of the solution of a DAE to perturbations of its right-hand side.
 The DAE</p>
@@ -887,7 +932,7 @@ A DAE with perturbation index greater than 1 is called a <em>higher-index DAE</e
 <p>See <a href="#hairer2006numerical">[hairer2006numerical]</a>.</p>
 </div>
 <div class="sect5">
-<h6 id="example-of-structural-singularity">Example of Structural Singularity</h6>
+<h6 id="example-structural-singularity">2.1.2.2.1. Example of Structural Singularity</h6>
 <div class="paragraph">
 <p><a href="#cellier2006continuous">[cellier2006continuous, chapter 7.7 Structural Singularity Elimination]</a> provides a simple electric circuit model that is a higher-index DAE.</p>
 </div>
@@ -924,7 +969,7 @@ The modeler could change the causality or exporting tools can try to reduce the 
 </div>
 </div>
 <div class="sect3">
-<h4 id="hello-world-dae-example">Hello World DAE Example</h4>
+<h4 id="dae-example">2.1.3. Hello World DAE Example</h4>
 <div class="paragraph">
 <p>A simple initial-value problem</p>
 </div>
@@ -962,7 +1007,7 @@ For this specific example a start condition \(x_0\) is sufficient to calculate c
 The independent variable (usually time) \(t\) is omitted for simplicity.</p>
 </div>
 <div class="sect4">
-<h5 id="hello-world-dae-fully-implicit-dae">Hello World DAE - Fully-Implicit DAE</h5>
+<h5 id="hello-world-dae-fully-implicit-dae">2.1.3.1. Hello World DAE - Fully-Implicit DAE</h5>
 <div class="paragraph">
 <p>The fully-implicit representation</p>
 </div>
@@ -992,7 +1037,7 @@ x_2 - 3 x_3 - 2 x_1
 </div>
 </div>
 <div class="sect4">
-<h5 id="hello-world-dae-semi-explicit-dae">Hello World DAE - Semi-Explicit DAE</h5>
+<h5 id="hello-world-dae-semi-explicit-dae">2.1.3.2. Hello World DAE - Semi-Explicit DAE</h5>
 <div class="paragraph">
 <p>The semi-explicit representation</p>
 </div>
@@ -1027,7 +1072,7 @@ y_1 - 3 y_2 - 2 x
 </div>
 </div>
 <div class="sect4">
-<h5 id="hello-world-dae-explicit-ode">Hello World DAE - Explicit ODE</h5>
+<h5 id="hello-world-dae-explicit-ode">2.1.3.3. Hello World DAE - Explicit ODE</h5>
 <div class="paragraph">
 <p>This simple system could also be transformed into an explicit ODE formulation</p>
 </div>
@@ -1051,6 +1096,146 @@ z       &amp;= -\frac{x}{5}
 </div>
 <div class="paragraph">
 <p>and exported as an ODE ModelExchange FMU.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ode-to-dae-mode">2.2. Changing between ODE and DAE Mode</h3>
+<div class="paragraph">
+<p>An FMU that implements this layered standard is simultaneously a valid ODE FMU and a DAE FMU.
+To remain backward-compatible with importers that do not support this layered standard, the FMU <strong>defaults to ODE mode</strong> on instantiation.
+An importer that is aware of this layered standard must explicitly switch the FMU into DAE mode before use.</p>
+</div>
+<div class="sect3">
+<h4 id="enable-dae-mode-variable">2.2.1. The <code>enableDAEModeVariable</code> Structural Parameter</h4>
+<div class="paragraph">
+<p>Switching between ODE and DAE behavior is controlled by a <a href="https://fmi-standard.org/docs/3.0.2/#structuralParameter">structural parameter</a> called <code>enableDAEModeVariable</code>.</p>
+</div>
+<div class="paragraph">
+<p>A structural parameter (<code>causality = structuralParameter</code>) may only be set during <a href="https://fmi-standard.org/docs/3.0.2/#ConfigurationMode">Configuration Mode</a> or <a href="https://fmi-standard.org/docs/3.0.2/#ReconfigurationMode">Reconfiguration Mode</a>.
+This constraint ensures that the importer can re-examine the model structure from the manifest and reinitialize its solver before any computation takes place.</p>
+</div>
+<div class="paragraph">
+<p>The <code>enableDAEModeVariable</code> parameter is declared in the <code>modelDescription.xml</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;Boolean name="&lt;free to choose&gt;"
+         valueReference="&lt;free to choose&gt;"
+         causality="structuralParameter"
+         variability="tunable|fixed"
+         start="false"
+         description="Set to true to enable DAE mode as defined by FMI-LS-DAE."/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and must be referenced by value reference within the FMI-LS-DAE manifest file via the <a href="#EnableDAE"><code>&lt;EnableDAE&gt;</code></a> element, see <a href="#layered-standard-manifest-file">Section 4</a>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>name</code> and <code>valueReference</code> is assigned freely by the FMU exporter; the importer locates the parameter by its <code>valueReference</code> declared in the <a href="#EnableDAE"><code>&lt;EnableDAE&gt;</code></a> element of <code>fmi-ls-manifest.xml</code>.
+The <code>description</code> attribute is optional.
+The <code>variability</code> must be either <code>tunable</code> or <code>fixed</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>fixed</code> — the mode can only be set in <a href="https://fmi-standard.org/docs/3.0.2/#ConfigurationMode">Configuration Mode</a> (before <code>fmi3EnterInitializationMode</code>).
+Use this when the FMU does not support switching modes at runtime.</p>
+</li>
+<li>
+<p><code>tunable</code> — the mode can additionally be changed in <a href="https://fmi-standard.org/docs/3.0.2/#ReconfigurationMode">Reconfiguration Mode</a> during simulation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The structural parameter <code>enableDAEModeVariable</code> must not be referenced in <code>&lt;Dimension&gt;</code> elements.</p>
+</div>
+<table id="table-dae-mode-parameter" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. <code>enableDAEModeVariable</code> structural parameter values.</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code> (default)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The FMU behaves as a standard ODE Model Exchange FMU.
+All DAE-specific information in the layered standard manifest is ignored by the importer.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The FMU behaves as a DAE FMU.
+The importer must read the <a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a>, <a href="#ModelStructure"><code>&lt;ModelStructure&gt;</code></a>, and <a href="#Residual"><code>&lt;Residual&gt;</code></a> elements from the layered standard manifest and use them to drive the simulation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="entering-dae-mode">2.2.2. Entering DAE Mode</h4>
+<div class="paragraph">
+<p>Because <code>enableDAEModeVariable</code> is a structural parameter, the importer must change it inside a configuration or reconfiguration scope.</p>
+</div>
+<div class="sect4">
+<h5 id="at-instantiation-configuration-mode">2.2.2.1. At Instantiation (Configuration Mode)</h5>
+<div class="paragraph">
+<p>The typical flow for an importer that uses the FMU in DAE mode from the start is:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Call <code>fmi3InstantiateModelExchange(&#8230;&#8203;)</code> to create the FMU instance.</p>
+</li>
+<li>
+<p>Call <code>fmi3EnterConfigurationMode(instance)</code> to enter <a href="https://fmi-standard.org/docs/3.0.2/#ConfigurationMode">Configuration Mode</a>.</p>
+</li>
+<li>
+<p>Call <code>fmi3SetBoolean(instance, {vr}, 1, {true}, 1)</code> to enable DAE mode, where <code>vr</code> is the <code>valueReference</code> of <code>enableDAEModeVariable</code>.</p>
+</li>
+<li>
+<p>Call <code>fmi3ExitConfigurationMode(instance)</code> to return to the <a href="https://fmi-standard.org/docs/3.0.2/#InstantiatedState">Instantiated</a> state.</p>
+</li>
+<li>
+<p>Continue with the normal FMI initialization sequence (<code>fmi3EnterInitializationMode</code>, etc.).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect4">
+<h5 id="during-simulation-reconfiguration-mode">2.2.2.2. During Simulation (Reconfiguration Mode)</h5>
+<div class="paragraph">
+<p>When <code>variability="tunable"</code>, an importer may also switch between ODE and DAE mode at runtime by entering <a href="https://fmi-standard.org/docs/3.0.2/#ReconfigurationMode">Reconfiguration Mode</a> from <a href="https://fmi-standard.org/docs/3.0.2/#EventMode">Event Mode</a>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Call <code>fmi3EnterConfigurationMode(instance)</code> from Event Mode to enter Reconfiguration Mode.</p>
+</li>
+<li>
+<p>Call <code>fmi3SetBoolean(instance, {vr}, 1, {newValue}, 1)</code> with the new mode value.</p>
+</li>
+<li>
+<p>Call <code>fmi3ExitConfigurationMode(instance)</code> to return to Event Mode.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+After switching modes, the importer is responsible for reinitializing its solver, and ensuring a consistent state before resuming the simulation.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1167,7 +1352,7 @@ Here the Modelica keyword <code>stateSelect</code> influences how variables are 
 <div class="sect3">
 <h4 id="scaling-power-grids-example">3.1.2. Scaling Power Grids Example</h4>
 <div class="paragraph">
-<p>For simulation models representing power grids on a national or larger scale, traditional ODE solvers may struggle with convergence and performance.
+<p>For simulation models representing power grids on a national or larger scale, traditional ODE solvers could struggle with convergence and performance.
 Also, the time needed to perform symbolic transformation from DAE to ODE is growing with the number of equations.</p>
 </div>
 <div class="paragraph">
@@ -1205,13 +1390,13 @@ Also, the time needed to perform symbolic transformation from DAE to ODE is grow
 <p>This layered standard requires the use of a layered standard manifest file and it shall be stored inside the FMU at the following path: <code>/extra/org.fmi-standard.fmi-ls-dae/fmi-ls-manifest.xml</code>.</p>
 </div>
 <div class="paragraph">
-<p>[Add figure here] shows the root element <code>fmiLayeredStandardManifest</code>.</p>
+<p>[Add figure here] shows the root element <code>fmi-ls-dae</code>.</p>
 </div>
 <div class="paragraph">
-<p>Two additional elements - <a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a> and <a href="#ModelStructure"><code>&lt;ModelStructure&gt;</code></a> - are included in the layered standard manifest file to describe the DAE formulation.</p>
+<p>Three additional elements - <a href="#EnableDAE"><code>&lt;EnableDAE&gt;</code></a>, <a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a>, and <a href="#ModelStructure"><code>&lt;ModelStructure&gt;</code></a> - are included as direct children of the root element in the layered standard manifest file to describe the DAE formulation.</p>
 </div>
 <table id="table-schema-fmiModelDescription" class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. <code>fmiModelDescription</code> element details.</caption>
+<caption class="title">Table 3. <code>fmi-ls-dae</code> child elements.</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 75%;">
@@ -1224,26 +1409,30 @@ Also, the time needed to perform symbolic transformation from DAE to ODE is grow
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#EnableDAE"><code>&lt;EnableDAE&gt;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required element referencing the <a href="https://fmi-standard.org/docs/3.0.2/#structuralParameter">structural parameter</a> in <code>modelDescription.xml</code> that enables DAE mode.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">List of all <a href="#AlgebraicVariable">algebraic variables</a> exposed for the DAE formulation.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ModelStructure"><code>&lt;ModelStructure&gt;</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines the structure of the DAE formulation for the model.
-Especially, the ordered lists of <a href="https://fmi-standard.org/docs/3.0.2/#output">outputs</a>, continuous-time <a href="https://fmi-standard.org/docs/3.0.2/#state">state</a>, and the initial unknowns (the unknowns during <a href="https://fmi-standard.org/docs/3.0.2/#InitializationMode">InitializationMode</a>) are <strong>re</strong>-defined and overwrite the corresponding <a href="https://fmi-standard.org/docs/3.0.2/#ModelStructure">ModelStructure</a> present in the <code>modelDescription.xml</code>, with the addition of the  <a href="#Residual">residuals</a> element.
+Especially, the ordered lists of <a href="https://fmi-standard.org/docs/3.0.2/#output">outputs</a>, continuous-time <a href="https://fmi-standard.org/docs/3.0.2/#state">state</a>, and the initial unknowns (the unknowns during <strong><a href="https://fmi-standard.org/docs/3.0.2/#InitializationMode">InitializationMode</a></strong>) are <strong>re</strong>-defined and overwrite the corresponding <a href="https://fmi-standard.org/docs/3.0.2/#ModelStructure">ModelStructure</a> present in the <code>modelDescription.xml</code>, with the addition of the  <a href="#Residual">residuals</a> element.
 The <a href="#AlgebraicVariables">algebraic variables</a> can now also be included as dependencies.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#annotations">Section 4.3</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#annotations">Section 4.4</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional annotations for the top-level element.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>The XML attributes of <code>&lt;fmiLayeredStandardManifest&gt;</code> are:</p>
+<p>The XML attributes of <code>&lt;fmi-ls-dae&gt;</code> are:</p>
 </div>
 <table id="table-schema-fmi-ls-dae-attributes" class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. <code>&lt;fmiLayeredStandardManifest&gt;`</code> attribute details.</caption>
+<caption class="title">Table 4. <code>&lt;fmi-ls-dae&gt;</code> attribute details.</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 20%;">
@@ -1268,24 +1457,52 @@ The <a href="#AlgebraicVariables">algebraic variables</a> can now also be includ
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>fmi-ls-version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>http://fmi-standard.org/fmi-ls-manifest</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.1.0</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Version of the layered standard. This layered standard uses semantic versioning, as defined in <a href="#PW13">[PW13]</a>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>fmi-ls-description</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>http://fmi-standard.org/fmi-ls-manifest</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Layered standard for DAE support in FMI</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Layered standard for DAE support in FMI.</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String with a brief description of the layered standard that is suitable for display to users.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="AlgebraicVariables">4.1. Algebraic variables</h3>
+<h3 id="EnableDAE">4.1. Enabling DAE mode</h3>
+<div class="paragraph">
+<p>The element <a href="#EnableDAE"><code>&lt;EnableDAE&gt;</code></a> references the <a href="https://fmi-standard.org/docs/3.0.2/#structuralParameter">structural parameter</a> in the <code>modelDescription.xml</code> that enables DAE mode.
+See <a href="#enable-dae-mode-variable">Section 2.2.1</a> for the full semantics and the calling sequences used to change the mode.</p>
+</div>
+<table id="table-enable-dae-details" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Attributes to <a href="#EnableDAE"><code>&lt;EnableDAE&gt;</code></a> element.</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 83.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>valueReference</code></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div id="enableDAEModeVariable" class="paragraph">
+<p>The <a href="https://fmi-standard.org/docs/3.0.2/#table-variableBase-attributes">value reference</a> of the structural parameter present in the <code>ModelVariables</code> of the <code>modelDescription.xml</code> that enables DAE mode.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="AlgebraicVariables">4.2. Algebraic variables</h3>
 <div class="paragraph">
 <p>The element <a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a> defines the list of the algebraic variables.</p>
 </div>
 <table id="table-algebraic-variables-details" class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. AlgebraicVariables elements.</caption>
+<caption class="title">Table 6. AlgebraicVariables elements.</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 83.3334%;">
@@ -1309,7 +1526,7 @@ The <a href="#AlgebraicVariables">algebraic variables</a> can now also be includ
 <p>Each <a href="#AlgebraicVariable"><code>&lt;AlgebraicVariable&gt;</code></a> has only one attribute defining the value reference.</p>
 </div>
 <table id="table-alg-details" class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. Attributes to <a href="#AlgebraicVariable"><code>&lt;AlgebraicVariable&gt;</code></a> element.</caption>
+<caption class="title">Table 7. Attributes to <a href="#AlgebraicVariable"><code>&lt;AlgebraicVariable&gt;</code></a> element.</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 83.3334%;">
@@ -1331,7 +1548,7 @@ The <a href="#AlgebraicVariables">algebraic variables</a> can now also be includ
 </table>
 </div>
 <div class="sect2">
-<h3 id="ModelStructure">4.2. Model Structure</h3>
+<h3 id="ModelStructure">4.3. Model Structure</h3>
 <div class="paragraph">
 <p>The structure of the model for the DAE-formulation is defined in element <a href="#ModelStructure"><code>&lt;ModelStructure&gt;</code></a>.
 It defines the <a href="#model-dependencies">dependencies</a> between variables.
@@ -1357,7 +1574,7 @@ All elements defined there (<code>Output</code>, <code>ContinuousStateDerivative
 <p>The <a href="#ModelStructure"><code>&lt;ModelStructure&gt;</code></a> element is extended with one additional element, <a href="#Residual"><code>&lt;Residual&gt;</code></a>, described below.</p>
 </div>
 <table id="table-model-structure-dae-element" class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. Additional ModelStructure element.</caption>
+<caption class="title">Table 8. Additional ModelStructure element.</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 83.3334%;">
@@ -1387,12 +1604,12 @@ Note that each formulation inside one residual element must reference unique var
 </tbody>
 </table>
 <div class="sect3">
-<h4 id="Formulation">4.2.1. Formulation</h4>
+<h4 id="Formulation">4.3.1. Formulation</h4>
 <div class="paragraph">
 <p>Each <code><a href="#Formulation"><code>&lt;Formulation&gt;</code></a></code> element within a <code><a href="#Residual"><code>&lt;Residual&gt;</code></a></code> has the following attributes:</p>
 </div>
 <table id="table-formulation-details" class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. Attributes to <code><a href="#Formulation"><code>&lt;Formulation&gt;</code></a></code> element.</caption>
+<caption class="title">Table 9. Attributes to <code><a href="#Formulation"><code>&lt;Formulation&gt;</code></a></code> element.</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 83.3334%;">
@@ -1413,7 +1630,7 @@ Note that each formulation inside one residual element must reference unique var
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>index</code></p></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div id="index-formulation" class="paragraph">
-<p>Optional attribute indicating the DAE index of the original constraint, i.e., how many times this particular equation must be differentiated in order to solve for a particular derivative.</p>
+<p>Optional attribute indicating the DAE index of the original constraint, i.e., how many times this particular equation needs to be differentiated in order to solve for a particular derivative.</p>
 </div></div></td>
 </tr>
 <tr>
@@ -1422,7 +1639,7 @@ Note that each formulation inside one residual element must reference unique var
 <p>Optional attribute defining the algebraic dependencies as a list of value references of the knowns \({\mathbf{v}_{\mathit{known}}}\) that this formulation directly depends on.</p>
 </div>
 <div class="paragraph">
-<p>Knowns \({\mathbf{v}_{\mathit{known}}}\) in <a href="https://fmi-standard.org/docs/3.0.2/#table-math-model-exchange">ContinuousTimeMode</a> (ME) for <code><a href="#Formulation"><code>&lt;Formulation&gt;</code></a></code> elements are:<br></p>
+<p>Knowns \({\mathbf{v}_{\mathit{known}}}\) in <strong><a href="https://fmi-standard.org/docs/3.0.2/#ContinuousTimeMode">ContinuousTimeMode</a></strong> (ME) for <code><a href="#Formulation"><code>&lt;Formulation&gt;</code></a></code> elements are:<br></p>
 </div>
 <div class="ulist">
 <ul>
@@ -1464,7 +1681,7 @@ TODO: Extend to help importer?</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="annotations">4.3. Annotations</h3>
+<h3 id="annotations">4.4. Annotations</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1480,28 +1697,28 @@ TODO
 <hr>
 </div>
 <div class="sect2">
-<h3 id="getting-partial-derivatives">4.4. Getting Partial Derivatives</h3>
+<h3 id="getting-partial-derivatives">4.5. Getting Partial Derivatives</h3>
 <div class="paragraph">
 <p>The partial derivative API functions <a href="https://fmi-standard.org/docs/3.0.2/#fmi3GetDirectionalDerivative">fmi3GetDirectionalDerivative</a> and <a href="https://fmi-standard.org/docs/3.0.2/#fmi3GetAdjointDerivative">fmi3GetAdjointDerivative</a> are used as defined in the core FMI standard, with the following extensions for DAE FMUs:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Algebraic variables (variables listed in <code><a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a></code>) may appear as knowns for any unknown.</p>
+<p>Algebraic variables (variables listed in <code><a href="#AlgebraicVariables"><code>&lt;AlgebraicVariables&gt;</code></a></code>) could appear as knowns for any unknown.</p>
 </li>
 <li>
-<p>When the unknown is a <a href="#Formulation"><code>&lt;Formulation&gt;</code></a> in a <a href="#Residual"><code>&lt;Residual&gt;</code></a>(i.e., a residual variable), continuous state derivatives may additionally appear as knowns.</p>
+<p>When the unknown is a <a href="#Formulation"><code>&lt;Formulation&gt;</code></a> in a <a href="#Residual"><code>&lt;Residual&gt;</code></a>(i.e., a residual variable), continuous state derivatives could additionally appear as knowns.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="hello-world-dae-example-2">4.5. Hello World DAE Example</h3>
+<h3 id="hello-world-dae-example">4.6. Hello World DAE Example</h3>
 <div class="paragraph">
 <p>Below outlines how to map the different forms of the Hello World DAE Example to the manifest file detailed here.</p>
 </div>
 <div class="sect3">
-<h4 id="hello-world-dae-fully-implicit-dae-2">4.5.1. Hello World DAE - Fully-Implicit DAE</h4>
+<h4 id="hello-world-dae-fully-implicit-dae-2">4.6.1. Hello World DAE - Fully-Implicit DAE</h4>
 <div class="paragraph">
 <p>The fully-implicit representation</p>
 </div>
@@ -1638,7 +1855,7 @@ The derivatives of <code>x_1</code>, <code>x_2</code>, and <code>x_3</code> (<co
 </div>
 </div>
 <div class="sect3">
-<h4 id="hello-world-dae-semi-explicit-dae-2">4.5.2. Hello World DAE - Semi-Explicit DAE</h4>
+<h4 id="hello-world-dae-semi-explicit-dae-2">4.6.2. Hello World DAE - Semi-Explicit DAE</h4>
 <div class="paragraph">
 <p>The semi-explicit representation</p>
 </div>
@@ -1749,7 +1966,7 @@ However this time the the derivative of <code>x</code> is given in explicit form
 </div>
 </div>
 <div class="sect3">
-<h4 id="hello-world-dae-explicit-ode-2">4.5.3. Hello World DAE - Explicit ODE</h4>
+<h4 id="hello-world-dae-explicit-ode-2">4.6.3. Hello World DAE - Explicit ODE</h4>
 <div class="paragraph">
 <p>This simple system could also be transformed into an explicit ODE formulation</p>
 </div>
@@ -1824,7 +2041,7 @@ z       &amp;= -\frac{x}{5}
 </div>
 </div>
 <div class="sect2">
-<h3 id="example-2-differentiated-formulations">4.6. Example 2 (differentiated formulations)</h3>
+<h3 id="example-2-differentiated-formulations">4.7. Example 2 (differentiated formulations)</h3>
 <div class="paragraph">
 <p>Consider the following index 2 DAE system:</p>
 </div>
@@ -1921,7 +2138,7 @@ The importer is responsible to figure out how to solve the system:</p>
 </div>
 <div class="paragraph">
 <p><strong>Case 2:</strong>
-The FMU additionally indicates that \(r_3\) is a constraint of index 2, i.e., it must be differentiated twice to obtain an index 1 system.
+The FMU additionally indicates that \(r_3\) is a constraint of index 2, i.e., it needs to be be differentiated twice to obtain an index 1 system.
 This gives the importer structural information to know to apply a solver able to handle index 2 problems:</p>
 </div>
 <div class="listingblock">

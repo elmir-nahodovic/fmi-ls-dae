@@ -49,7 +49,7 @@
 	-->
 	<xs:element name="fmi-ls-dae">
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
 				<xs:element name="EnableDAE" type="fmi-ls:TEnableDAE" minOccurs="1" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
@@ -58,16 +58,24 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="AlgebraicVariables" type="fmi-ls:TAlgebraicVariables"
-					minOccurs="0">
+				<xs:element name="AlgebraicVariable" type="fmi-ls:TAlgebraicVariable"
+					minOccurs="0" maxOccurs="unbounded">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
-							List of algebraic variables exposed by this DAE FMU.
+							Defines an algebraic variable exposed by this DAE FMU.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Nominal" type="fmi-ls:TNominal"
+					minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Defines the nominal value of an algebraic or residual variable.
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 				<xs:element name="ModelStructure" type="fmi-ls:TDaeModelStructure"
-					minOccurs="0">
+					minOccurs="0" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							Overrides the ModelStructure in modelDescription.xml with
@@ -75,7 +83,7 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute ref="fmi-ls:fmi-ls-name" use="required"
 				fixed="org.fmi-standard.fmi-ls-dae"/>
 			<xs:attribute ref="fmi-ls:fmi-ls-version" use="required"/>
@@ -101,6 +109,26 @@
 		</xs:attribute>
 	</xs:complexType>
 
+	<!-- Nominal value for an algebraic or residual variable -->
+	<xs:complexType name="TNominal">
+		<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Value reference of the nominal variable in ModelVariables of
+					the modelDescription.xml.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="nominalTo" type="xs:unsignedInt" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Value reference of the variable for which this nominal value is
+					defined.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
 	<!-- Reference to the structural parameter that enables DAE mode -->
 	<xs:complexType name="TEnableDAE">
 		<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
@@ -115,16 +143,8 @@
 		</xs:attribute>
 	</xs:complexType>
 
-	<!-- Container listing all algebraic variables -->
-	<xs:complexType name="TAlgebraicVariables">
-		<xs:sequence>
-			<xs:element name="AlgebraicVariable" type="fmi-ls:TAlgebraicVariable"
-				maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<!-- One formulation (equation) within a Residual -->
-	<xs:complexType name="TFormulation">
+	<!-- Residual equation -->
+	<xs:complexType name="TResidual">
 		<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
 			<xs:annotation>
 				<xs:documentation xml:lang="en">
@@ -133,20 +153,12 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="index" type="xs:unsignedInt">
-			<xs:annotation>
-				<xs:documentation xml:lang="en">
-					Optional DAE index: number of times this equation must be
-					differentiated to obtain an index-1 system.
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
 		<xs:attribute name="dependencies" type="fmi-ls:TValueReferenceList">
 			<xs:annotation>
 				<xs:documentation xml:lang="en">
-					Space-separated list of value references this formulation depends on.
+					Space-separated list of value references this residual depends on.
 					If absent, dependence on all knowns is assumed.
-					If present but empty, the formulation depends on no knowns.
+					If present but empty, the residual depends on no knowns.
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
@@ -158,21 +170,6 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-	</xs:complexType>
-
-	<!-- Residual equation: one or more formulations (differentiated forms of the same constraint) -->
-	<xs:complexType name="TResidual">
-		<xs:sequence>
-			<xs:element name="Formulation" type="fmi-ls:TFormulation"
-				maxOccurs="unbounded">
-				<xs:annotation>
-					<xs:documentation xml:lang="en">
-						Multiple Formulation elements within one Residual represent
-						the same constraint differentiated to successive orders.
-					</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
 	</xs:complexType>
 
 	<!-- Structure element shared by Output, ContinuousStateDerivative, etc. -->

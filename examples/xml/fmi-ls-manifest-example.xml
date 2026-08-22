@@ -10,9 +10,7 @@
 >
   <EnableDAE valueReference="20" />
 
-  <AlgebraicVariables>
-    <AlgebraicVariable valueReference="5" /> <!-- z1 -->
-  </AlgebraicVariables>
+  <AlgebraicVariable valueReference="5" /> <!-- z1 -->
 
   <ModelStructure>
     <!-- der(x1) = f(x1, z1, z2, u1)
@@ -24,12 +22,10 @@
 
     <!-- __residual0 = g(x1, z1, u1, u2)
          DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->
-    <Residual>
-      <Formulation
-        valueReference="11"
-        dependencies="1 5 7 8"
-        dependenciesKind="dependent dependent dependent dependent" />
-    </Residual>
+    <Residual
+      valueReference="11"
+      dependencies="1 5 7 8"
+      dependenciesKind="dependent dependent dependent dependent" />
 
     <!-- y1 = h(x1, z1, u1, u2)
          DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->

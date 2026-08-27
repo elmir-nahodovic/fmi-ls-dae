@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="qualified" attributeFormDefault="qualified"
-    xmlns:fmi-ls="http://fmi-standard.org/fmi-ls-manifest"
-    targetNamespace="http://fmi-standard.org/fmi-ls-manifest">
+    elementFormDefault="qualified" attributeFormDefault="unqualified"
+    xmlns:fmi-ls="http://fmi-standard.org/fmi-ls-manifest">
     <xs:annotation>
         <xs:documentation>
 Copyright(c) 2024 Modelica Association Project "FMI".
@@ -37,33 +36,107 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </xs:documentation>
     </xs:annotation>
 
-    <xs:attribute name="fmi-ls-name" type="xs:normalizedString">
-        <xs:annotation>
-            <xs:documentation xml:lang="en">
-                This attribute gives the name, in reverse domain name notation,
-                of the layered standard.
-            </xs:documentation>
-        </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="fmi-ls-version" type="xs:normalizedString">
-        <xs:annotation>
-            <xs:documentation xml:lang="en">
-                This attribute gives the version of the layered standard. The use
-                of semantic versioning is highly recommended. In case of semantic
-                versioning it is up to the layered standard to define whether only
-                major and minor version are included in the version attribute,
-                or the full version is to be included.
-            </xs:documentation>
-        </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="fmi-ls-description" type="xs:normalizedString">
-        <xs:annotation>
-            <xs:documentation xml:lang="en">
-                This attribute gives a string with a brief description of the
-                layered standard that is suitable for display to users.
-            </xs:documentation>
-        </xs:annotation>
-    </xs:attribute>
+    <xs:import namespace="http://fmi-standard.org/fmi-ls-manifest"
+        schemaLocation="fmi3LayeredStandardManifest.xsd"/>
+
+    <xs:simpleType name="TValueReferenceList">
+        <xs:list itemType="xs:unsignedInt"/>
+    </xs:simpleType>
+
+    <xs:complexType name="TEnableDAE">
+        <xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    The value reference of the structural parameter present in the
+                    ModelVariables of the modelDescription.xml that enables DAE mode.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="TAlgebraicVariable">
+        <xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    The value reference for the algebraic variable present in the
+                    ModelVariables of the modelDescription.xml.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="nominal" type="xs:unsignedInt">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    Optional attribute containing the value reference for the variable
+                    present in the ModelVariables of the modelDescription.xml that
+                    represents the nominal value of the algebraic variable.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="TModelStructureElement">
+        <xs:attribute name="valueReference" type="xs:unsignedInt" use="required"/>
+        <xs:attribute name="dependencies" type="TValueReferenceList"/>
+        <xs:attribute name="dependenciesKind" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="TResidual">
+        <xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    The value reference of the residual variable, which must be present
+                    in the ModelVariables element of the modelDescription.xml.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="dependencies" type="TValueReferenceList">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    Optional attribute defining the algebraic dependencies as a list
+                    of value references of the knowns that this residual equation
+                    directly depends on.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="dependenciesKind" type="xs:string">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    See the description of dependenciesKind in the core FMI standard.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="TModelStructure">
+        <xs:sequence>
+            <xs:element name="Output" type="TModelStructureElement"
+                minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ContinuousStateDerivative" type="TModelStructureElement"
+                minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ClockedState" type="TModelStructureElement"
+                minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="InitialUnknown" type="TModelStructureElement"
+                minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="EventIndicator" type="TModelStructureElement"
+                minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Residual" type="TResidual"
+                minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TAnnotation" mixed="true">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:normalizedString" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="TAnnotations">
+        <xs:sequence>
+            <xs:element name="Annotation" type="TAnnotation"
+                minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:attributeGroup name="ALayeredStandardManifest">
         <xs:annotation>
@@ -73,21 +146,53 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 mandated by a layered standard.
             </xs:documentation>
         </xs:annotation>
-        <xs:attribute ref="fmi-ls:fmi-ls-name" use="required"/>
-        <xs:attribute ref="fmi-ls:fmi-ls-version" use="required"/>
-        <xs:attribute ref="fmi-ls:fmi-ls-description" use="required"/>
+        <xs:attribute ref="fmi-ls:fmi-ls-name" use="required"
+            fixed="org.fmi-standard.fmi-ls-dae">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    This attribute gives the name, in reverse domain name notation,
+                    of the layered standard.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="fmi-ls:fmi-ls-version" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    This attribute gives the version of the layered standard. The use
+                    of semantic versioning is highly recommended. In case of semantic
+                    versioning it is up to the layered standard to define whether only
+                    major and minor version are included in the version attribute,
+                    or the full version is to be included.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="fmi-ls:fmi-ls-description" use="required"
+            fixed="Layered standard for DAE support in FMI.">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    This attribute gives a string with a brief description of the
+                    layered standard that is suitable for display to users.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:attributeGroup>
 
-    <xs:element name="fmiLayeredStandardManifest">
+    <xs:element name="fmiDAEManifest">
         <xs:annotation>
             <xs:documentation xml:lang="en">
-                This is the default root element to use in a layered standard for the mandated
-                fmi-ls-manifest.xml file, if no other suitable root element definition is provided
-                in the layered standard.
+                This is the root element to use in the DAE layered standard for the mandated
+                fmi-ls-manifest.xml file.
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:attributeGroup ref="fmi-ls:ALayeredStandardManifest"/>
+            <xs:sequence>
+                <xs:element name="EnableDAE" type="TEnableDAE"/>
+                <xs:element name="AlgebraicVariable" type="TAlgebraicVariable"
+                    minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="ModelStructure" type="TModelStructure"/>
+                <xs:element name="Annotations" type="TAnnotations" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="ALayeredStandardManifest"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

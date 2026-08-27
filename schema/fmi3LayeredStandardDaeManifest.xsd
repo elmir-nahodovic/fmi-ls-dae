@@ -195,14 +195,14 @@
 		The Residual element is new.
 	-->
 	<xs:complexType name="TDaeModelStructure">
-		<xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Output"                    type="TModelStructureElement" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="ContinuousStateDerivative" type="TModelStructureElement" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="ClockedState"              type="TModelStructureElement" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="InitialUnknown"            type="TModelStructureElement" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="EventIndicator"            type="TModelStructureElement" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="Residual"                  type="TResidual" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+		</xs:choice>
 	</xs:complexType>
 
 	<!-- Annotations as defined by the core FMI XML schema -->

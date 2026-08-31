@@ -9,7 +9,9 @@
 >
   <EnableDAE valueReference="20" />
 
-  <AlgebraicVariable valueReference="5" /> <!-- z1 -->
+  <AlgebraicVariables>
+    <AlgebraicVariable valueReference="5" /> <!-- z1 -->
+  </AlgebraicVariables>
 
   <ModelStructure>
     <!-- der(x1) = f(x1, z1, z2, u1)

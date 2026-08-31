@@ -9,8 +9,10 @@
 >
   <EnableDAE valueReference="13" />
 
-  <AlgebraicVariable valueReference="5" /> <!-- z1 -->
-  <AlgebraicVariable valueReference="6" /> <!-- z2 -->
+  <AlgebraicVariables>
+    <AlgebraicVariable valueReference="5" /> <!-- z1 -->
+    <AlgebraicVariable valueReference="6" /> <!-- z2 -->
+  </AlgebraicVariables>
 
   <ModelStructure>
     <!-- der(x1) = sin(x1) + sin(z1*z2*u1)

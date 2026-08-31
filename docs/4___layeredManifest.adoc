@@ -7,7 +7,7 @@ This layered standard requires the use of a layered standard manifest file and i
 Several new elements are included as direct children of the root element in the layered standard manifest file to describe the DAE formulation.
 
 .`fmiDAEManifest` child elements.
-[[table-schema-fmiLayeredStandardManifest]]
+[[table-schema-fmiDAEManifest]]
 [cols="1,3",options="header"]
 |====
 |Element
@@ -16,13 +16,13 @@ Several new elements are included as direct children of the root element in the 
 |<<EnableDAE>>
 |Required element referencing the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in `modelDescription.xml` that enables DAE mode.
 
-|<<AlgebraicVariable>>
-|Defines all <<AlgebraicVariable, algebraic variables>> exposed for the DAE formulation.
+|<<AlgebraicVariables>>
+|List of all <<AlgebraicVariables, algebraic variables>> exposed for the DAE formulation.
 
 |<<ModelStructure>>
 |Defines the structure of the DAE formulation for the model.
 Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[states], and the initial unknowns (the unknowns during *https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]*) are *re*-defined and overwrite the corresponding https://fmi-standard.org/docs/3.0.2/#ModelStructure[ModelStructure] present in the `modelDescription.xml`, with the addition of the  <<Residual, residuals>> element.
-The <<AlgebraicVariable,algebraic variables>> can be included as dependencies.
+The <<AlgebraicVariables,algebraic variables>> can be included as dependencies, and can also be initial unknowns.
 
 |<<Annotations>>
 |Optional annotations for the top-level element.
@@ -73,11 +73,23 @@ See <<enable-dae-mode-variable>> for the full semantics and the calling sequence
 The https://fmi-standard.org/docs/3.0.2/#table-variableBase-attributes[value reference] of the structural parameter present in the `ModelVariables` of the `modelDescription.xml` that enables DAE mode.
 |====
 
-=== Algebraic variables [[AlgebraicVariable, `<AlgebraicVariable>`]]
+=== Algebraic variables [[AlgebraicVariables, `<AlgebraicVariables>`]]
 
-The element <<AlgebraicVariable>> defines the algebraic variables.
+The element <<AlgebraicVariables>> defines the list of the algebraic variables.
 
-Each <<AlgebraicVariable>> has the following attributes.
+.AlgebraicVariables elements.
+[[table-algebraic-variables-details]]
+[cols="1,5a", options="header"]
+|====
+|Element
+|Description
+
+|`AlgebraicVariable`
+|An <<AlgebraicVariable>> present in the `ModelVariables` element of the modelDescription.xml.
+|====
+
+[[AlgebraicVariable, `<AlgebraicVariable>`]]
+Each <<AlgebraicVariable>> has only one attribute defining the value reference.
 
 .Attributes to <<AlgebraicVariable>> element.
 [[table-alg-details]]
@@ -87,15 +99,10 @@ Each <<AlgebraicVariable>> has the following attributes.
 |Description
 
 |`valueReference`
-|The value reference for the algebraic variable present in the `ModelVariables` of the `modelDescription.xml`.
-
-|`nominal`
-|Optional attribute containing the value reference for the variable present in the `ModelVariables` of the `modelDescription.xml` that represents the nominal value of the algebraic variable.
+|The value reference for the algebraic variable present in the `ModelVariables` of the modelDescription.xml.
 |====
 
-NOTE: In the core Model Exchange standard there exists the API function *https://fmi-standard.org/docs/3.0.2/#fmi3GetNominalsOfContinuousStates[fmi3GetNominalsOfContinuousStates]*, which only holds for the continous time states. This `nominal` attribute of the `<AlgebraicVariable>` element should be seen as an extension targeting the algebraic variables, if it is the case that they would change during integration.
-
-If no `nominal` attribute is present under the `<<AlgebraicVariable>>` element, and no `nominal` attribute is present for the algebraic variable under `ModelVariables` of the `modelDescription.xml`, then the algebraic variable has a default nominal of 1.0.
+NOTE: In the core Model Exchange standard there exists the API function *https://fmi-standard.org/docs/3.0.2/#fmi3GetNominalsOfContinuousStates[fmi3GetNominalsOfContinuousStates]*, which only holds for the continous time states. There is currently no extension of the API for fmi-ls-dae. The algebraic variable could still have a nominal value defined by the `nominal` attribute for variables under `ModelVariables` of the `modelDescription.xml`, but in this case the nominal is constant.
 
 === Model Structure [[ModelStructure,`<ModelStructure>`]]
 
@@ -105,8 +112,11 @@ The <<ModelStructure>> element is extended with an additional element - <<Residu
 
 An FMU that follows this layered standard must expose all residuals using the <<Residual>> element.
 
-NOTE: The <<ModelStructure>> defined here extends the one from the core FMI standard.
-All elements defined there (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics, with the addition that each element's `dependencies` attribute may now also reference <<AlgebraicVariable, algebraic variables>>.
+The <<ModelStructure>> defined here extends the one from the core FMI standard.
+All elements defined in the core standard (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics in this manifest, with the additions that:
+
+* Each element's `dependencies` attribute may now also reference <<AlgebraicVariable, algebraic variables>>.
+* The `InitialUnknown` element may reference an algebraic variable.
 
 The <<ModelStructure>> element is extended with one additional element, <<Residual>>, described below.
 
@@ -119,7 +129,7 @@ The <<ModelStructure>> element is extended with one additional element, <<Residu
 
 |`Residual`
 |[[Residual,`<Residual>`]]
-Ordered list of residual equations (constraints). Each residual element must reference a unique variable present in the `ModelVariables` of the `modelDescription.xml`. It is the importer's responsiblity to find the values of the <<AlgebraicVariable, algebraic variables>> such that the residuals are 0.
+Ordered list of residual equations (constraints). Each residual element must reference a unique variable present in the `ModelVariables` of the `modelDescription.xml`. It is the importer's responsiblity to find the values of the <<AlgebraicVariables, algebraic variables>> such that the residuals are 0.
 The functional dependency is defined as: +
 latexmath:[{0 := \mathbf{f}_{\mathit{res}}(\mathbf{x}_c, \mathbf{a}_c, \mathbf{u}_c, t, \mathbf{p})}]
 |====
@@ -148,7 +158,7 @@ Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/do
 
 * parameters (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#parameter[parameter]),
 
-* algebraic variables (variables listed in an `<<AlgebraicVariable>>` element),
+* algebraic variables (variables listed in an `<<AlgebraicVariables>>` element),
 
 * https://fmi-standard.org/docs/3.0.2/#independent[independent] variable (usually time; https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#independent[independent]).
 
@@ -167,7 +177,8 @@ Otherwise the residual depends on the knowns defined by the given value referenc
 
 The partial derivative API functions https://fmi-standard.org/docs/3.0.2/#fmi3GetDirectionalDerivative[fmi3GetDirectionalDerivative] and https://fmi-standard.org/docs/3.0.2/#fmi3GetAdjointDerivative[fmi3GetAdjointDerivative] are used as defined in the core FMI standard, with the following extensions for DAE FMUs:
 
-* Algebraic variables (variables listed as `<<AlgebraicVariable>>`) could appear as knowns for any unknown.
+* <<Residual, Residual>> variables can appear as unknowns.
+* <<AlgebraicVariable, Algebraic variables>> could appear as knowns for any unknown.
 
 ---
 
@@ -213,6 +224,7 @@ Assume the FMU has these variables:
 [cols="1,1", options="header"]
 |====
 |Variable | valueReference
+|`enableDAEModeVariable` | 0
 |latexmath:[t] | 1
 |latexmath:[x_1] | 2
 |latexmath:[x_2] | 3
@@ -226,11 +238,15 @@ Assume the FMU has these variables:
 |====
 
 In this case `x_2` and `x_3` do not appear differentiated in any equations, hence they are classified as algebraic (contained in an `<<AlgebraicVariable>>` element).
-An example of the `<<AlgebraicVariable>>` and `<<ModelStructure>>` elements would be:
+An example of the `<<EnableDAE>>`, `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
 
 ```xml
-<AlgebraicVariable valueReference="3"/> <!-- x_2 -->
-<AlgebraicVariable valueReference="4"/> <!-- x_3 -->
+<EnableDAE
+  valueReference="0"/>
+<AlgebraicVariables>
+  <AlgebraicVariable valueReference="3"/> <!-- x_2 -->
+  <AlgebraicVariable valueReference="4"/> <!-- x_3 -->
+</AlgebraicVariables>
 <ModelStructure>
   <Residual
     valueReference="8"
@@ -285,6 +301,7 @@ Assume the FMU has the following variables:
 [cols="1,1", options="header"]
 |====
 |Variable | valueReference
+|`enableDAEModeVariable` | 0
 |latexmath:[t] | 1
 |latexmath:[x] | 2
 |latexmath:[y_1] | 3
@@ -299,9 +316,12 @@ However this time the the derivative of `x` is given in explicit form in the `Mo
 
 ```xml
 
-<AlgebraicVariable valueReference="3"/> <!-- y1 -->
-<AlgebraicVariable valueReference="4"/> <!-- y2 -->
-
+<EnableDAE
+  valueReference="0"/>
+<AlgebraicVariables>
+  <AlgebraicVariable valueReference="3"/> <!-- y1 -->
+  <AlgebraicVariable valueReference="4"/> <!-- y2 -->
+</AlgebraicVariables>
 <ModelStructure>
   <ContinuousStateDerivative
     valueReference="5"
@@ -355,7 +375,8 @@ This would correspond to the regular ODE ModelStructure:
 
 ```xml
 <ModelStructure>
-  <ContinuousStateDerivative <!-- dot(x) = 7/5 * x -->
+  <!-- dot(x) = 7/5 * x -->
+  <ContinuousStateDerivative
     valueReference="5"
     dependencies="2"
     dependenciesKind="fixed"/>

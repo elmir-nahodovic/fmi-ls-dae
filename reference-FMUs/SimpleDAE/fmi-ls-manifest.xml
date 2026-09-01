@@ -15,6 +15,18 @@
   </AlgebraicVariables>
 
   <ModelStructure>
+    <!-- y1 = u1*x1*z1 + sin(u2)
+           DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->
+    <Output
+      valueReference="9"
+      dependencies="1 5 7 8"
+      dependenciesKind="dependent dependent dependent dependent" />
+    <!-- y2 = u2*x2*z2 + sin(u1*u2)
+           DAE-mode deps: x2(vr=3), z2(vr=6), u1(vr=7), u2(vr=8) -->
+    <Output
+      valueReference="10"
+      dependencies="3 6 7 8"
+      dependenciesKind="dependent dependent dependent dependent" />
     <!-- der(x1) = sin(x1) + sin(z1*z2*u1)
            DAE-mode deps: x1(vr=1), z1(vr=5), z2(vr=6), u1(vr=7) -->
     <ContinuousStateDerivative
@@ -39,18 +51,7 @@
       valueReference="12"
       dependencies="3 5 6 7"
       dependenciesKind="dependent dependent dependent dependent" />
-    <!-- y1 = u1*x1*z1 + sin(u2)
-           DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->
-    <Output
-      valueReference="9"
-      dependencies="1 5 7 8"
-      dependenciesKind="dependent dependent dependent dependent" />
-    <!-- y2 = u2*x2*z2 + sin(u1*u2)
-           DAE-mode deps: x2(vr=3), z2(vr=6), u1(vr=7), u2(vr=8) -->
-    <Output
-      valueReference="10"
-      dependencies="3 6 7 8"
-      dependenciesKind="dependent dependent dependent dependent" />
+
   </ModelStructure>
 
 </fmiDAEManifest>

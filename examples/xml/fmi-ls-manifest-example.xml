@@ -14,6 +14,14 @@
   </AlgebraicVariables>
 
   <ModelStructure>
+
+    <!-- y1 = h(x1, z1, u1, u2)
+         DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->
+    <Output
+      valueReference="9"
+      dependencies="1 5 7 8"
+      dependenciesKind="dependent dependent dependent dependent" />
+
     <!-- der(x1) = f(x1, z1, z2, u1)
          DAE-mode deps: x1(vr=1), z1(vr=5), z2(vr=6), u1(vr=7) -->
     <ContinuousStateDerivative
@@ -25,13 +33,6 @@
          DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->
     <Residual
       valueReference="11"
-      dependencies="1 5 7 8"
-      dependenciesKind="dependent dependent dependent dependent" />
-
-    <!-- y1 = h(x1, z1, u1, u2)
-         DAE-mode deps: x1(vr=1), z1(vr=5), u1(vr=7), u2(vr=8) -->
-    <Output
-      valueReference="9"
       dependencies="1 5 7 8"
       dependenciesKind="dependent dependent dependent dependent" />
   </ModelStructure>

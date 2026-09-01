@@ -47,19 +47,11 @@
 	<xs:element name="fmiDAEManifest">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="EnableDAE">
-					<xs:complexType>
-						<xs:attribute name="valueReference" type="xs:unsignedInt" use="required"/>
-					</xs:complexType>
-				</xs:element>
+				<xs:element name="EnableDAEParameter" type="TVariableReference"/>
 				<xs:element name="AlgebraicVariables">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="AlgebraicVariable" minOccurs="0" maxOccurs="unbounded">
-								<xs:complexType>
-								<xs:attribute name="valueReference" type="xs:unsignedInt" use="required"/>
-								</xs:complexType>
-							</xs:element>
+							<xs:element name="AlgebraicVariable" type="TVariableReference" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -75,10 +67,30 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+				<xs:element ref="Annotations" minOccurs="0"/>
 			</xs:sequence>
-			<xs:attribute ref="fmi-ls:fmi-ls-name" use="required"/>
+			<xs:attribute ref="fmi-ls:fmi-ls-name" use="required"
+				fixed="org.fmi-standard.fmi-ls-dae"/>
 			<xs:attribute ref="fmi-ls:fmi-ls-version" use="required"/>
-			<xs:attribute ref="fmi-ls:fmi-ls-description"/>
+			<xs:attribute ref="fmi-ls:fmi-ls-description" use="required"
+				fixed="Layered standard for DAE support in FMI."/>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:complexType name="TVariableReference">
+		<xs:complexContent>
+			<xs:restriction base="fmi3Unknown">
+				<xs:sequence>
+					<xs:element ref="Annotations" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Value reference of the variable in ModelVariables of the modelDescription.xml.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
 </xs:schema>

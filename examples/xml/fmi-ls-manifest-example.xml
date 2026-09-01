@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fmiDAEManifest
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/modelica/fmi-ls-dae/main/schema/fmi3LayeredStandardDaeManifest.xsd"
+  xsi:noNamespaceSchemaLocation="../../schema/fmi3LayeredStandardDaeManifest.xsd"
   xmlns:fmi-ls="http://fmi-standard.org/fmi-ls-manifest"
   fmi-ls:fmi-ls-name="org.fmi-standard.fmi-ls-dae"
   fmi-ls:fmi-ls-version="1.0.0-alpha.1"
   fmi-ls:fmi-ls-description="Layered standard for DAE support in FMI."
 >
-  <EnableDAE valueReference="20" />
+  <EnableDAEParameter valueReference="20" />
 
   <AlgebraicVariables>
     <AlgebraicVariable valueReference="5" /> <!-- z1 -->

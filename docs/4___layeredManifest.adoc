@@ -13,7 +13,7 @@ Several new elements are included as direct children of the root element in the 
 |Element
 |Description
 
-|<<EnableDAE>>
+|<<EnableDAEParameter>>
 |Required element referencing the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in `modelDescription.xml` that enables DAE mode.
 
 |<<AlgebraicVariables>>
@@ -56,12 +56,12 @@ The XML attributes of `<fmiDAEManifest>` are:
 |String with a brief description of the layered standard that is suitable for display to users.
 |====
 
-=== Enabling DAE mode [[EnableDAE, `<EnableDAE>`]]
+=== Enabling DAE mode [[EnableDAEParameter, `<EnableDAEParameter>`]]
 
-The element <<EnableDAE>> references the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in the `modelDescription.xml` that enables DAE mode.
+The element <<EnableDAEParameter>> references the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in the `modelDescription.xml` that enables DAE mode.
 See <<enable-dae-mode-variable>> for the full semantics and the calling sequences used to change the mode.
 
-.Attributes to <<EnableDAE>> element.
+.Attributes to <<EnableDAEParameter>> element.
 [[table-enable-dae-details]]
 [cols="1,5a", options="header"]
 |====
@@ -238,10 +238,10 @@ Assume the FMU has these variables:
 |====
 
 In this case `x_2` and `x_3` do not appear differentiated in any equations, hence they are classified as algebraic (contained in an `<<AlgebraicVariable>>` element).
-An example of the `<<EnableDAE>>`, `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
+An example of the `<<EnableDAEParameter>>`, `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
 
 ```xml
-<EnableDAE
+<EnableDAEParameter
   valueReference="0"/>
 <AlgebraicVariables>
   <AlgebraicVariable valueReference="3"/> <!-- x_2 -->
@@ -316,7 +316,7 @@ However this time the the derivative of `x` is given in explicit form in the `Mo
 
 ```xml
 
-<EnableDAE
+<EnableDAEParameter
   valueReference="0"/>
 <AlgebraicVariables>
   <AlgebraicVariable valueReference="3"/> <!-- y1 -->

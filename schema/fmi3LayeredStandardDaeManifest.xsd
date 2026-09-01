@@ -4,7 +4,7 @@
     xmlns:fmi-ls="http://fmi-standard.org/fmi-ls-manifest"
     elementFormDefault="qualified"
     attributeFormDefault="qualified">
-	
+
 	<xs:annotation>
 		<xs:documentation>
 			Copyright(c) 2025 - 2026 Modelica Association Project FMI.
@@ -39,11 +39,11 @@
 		</xs:documentation>
 	</xs:annotation>
 
-	<xs:import namespace="http://fmi-standard.org/fmi-ls-manifest" 
+	<xs:import namespace="http://fmi-standard.org/fmi-ls-manifest"
 		schemaLocation="fmi3LayeredStandardManifest.xsd"/>
-	
+
 	<xs:include schemaLocation="fmi3VariableDependency.xsd"/>
-	
+
 	<xs:element name="fmiDAEManifest">
 		<xs:complexType>
 			<xs:sequence>

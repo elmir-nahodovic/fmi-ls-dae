@@ -41,6 +41,9 @@
 	     referenced below. -->
 	<xs:import namespace="http://fmi-standard.org/fmi-ls-manifest"
 		schemaLocation="fmi3LayeredStandardManifest.xsd"/>
+	<!-- Include common definitions from core FMI standard -->
+	<xs:include schemaLocation="../../fmi-standard/schema/fmi3Annotation.xsd"/>
+	<xs:include schemaLocation="../../fmi-standard/schema/fmi3VariableDependency.xsd"/>
 
 	<!--
 		Root element of the FMI-LS-DAE manifest file. This layered standard provides
@@ -49,25 +52,30 @@
 	-->
 	<xs:element name="fmiDAEManifest">
 		<xs:complexType>
-			<xs:all>
-				<xs:element name="EnableDAE" type="TEnableDAE" minOccurs="1" maxOccurs="1">
+			<xs:sequence>
+				<xs:element name="EnableDAEParameter" type="TVariableReference">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							References the structural parameter in the modelDescription.xml
-							that enables DAE mode.
+							that enables DAE mode. The referenced variable must be a Boolean
+							with causality="structuralParameter" and variability="tunable"
+							or "fixed".
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="AlgebraicVariables" type="TAlgebraicVariables"
-					minOccurs="0" maxOccurs="1">
+				<xs:element name="AlgebraicVariables" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							List of algebraic variables exposed by this DAE FMU.
 						</xs:documentation>
 					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AlgebraicVariable" type="TVariableReference" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
 				</xs:element>
-				<xs:element name="ModelStructure" type="TDaeModelStructure"
-					minOccurs="0" maxOccurs="1">
+				<xs:element name="ModelStructure" type="TDaeModelStructure" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							Overrides the ModelStructure in modelDescription.xml with
@@ -75,15 +83,8 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Annotations" type="TAnnotations"
-					minOccurs="0" maxOccurs="1">
-					<xs:annotation>
-						<xs:documentation xml:lang="en">
-							Optional annotations for the top-level element.
-						</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:all>
+				<xs:element ref="Annotations" minOccurs="0"/>
+			</xs:sequence>
 			<xs:attribute ref="fmi-ls:fmi-ls-name" use="required"
 				fixed="org.fmi-standard.fmi-ls-dae"/>
 			<xs:attribute ref="fmi-ls:fmi-ls-version" use="required"/>
@@ -92,69 +93,21 @@
 		</xs:complexType>
 	</xs:element>
 
-	<!-- Space-separated list of value references -->
-	<xs:simpleType name="TValueReferenceList">
-		<xs:list itemType="xs:unsignedInt"/>
-	</xs:simpleType>
-
-	<!-- Dependency kind as defined for dependenciesKind in the core FMI standard -->
-	<xs:simpleType name="TDependencyKind">
-		<xs:restriction base="xs:normalizedString">
-			<xs:enumeration value="dependent"/>
-			<xs:enumeration value="constant"/>
-			<xs:enumeration value="fixed"/>
-			<xs:enumeration value="tunable"/>
-			<xs:enumeration value="discrete"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<!-- Space-separated list of dependency kinds -->
-	<xs:simpleType name="TDependencyKindList">
-		<xs:list itemType="TDependencyKind"/>
-	</xs:simpleType>
-
-	<!-- Single algebraic variable declaration -->
-	<xs:complexType name="TAlgebraicVariable">
-		<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
-			<xs:annotation>
-				<xs:documentation xml:lang="en">
-					Value reference of the algebraic variable in ModelVariables of
-					the modelDescription.xml.
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
-
-	<!-- Reference to the structural parameter that enables DAE mode -->
-	<xs:complexType name="TEnableDAE">
-		<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
-			<xs:annotation>
-				<xs:documentation xml:lang="en">
-					Value reference of the structural parameter in ModelVariables of
-					the modelDescription.xml that enables DAE mode. The referenced
-					variable must be a Boolean with causality="structuralParameter"
-					and variability="tunable" or "fixed".
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
-
-	<!-- Container listing all algebraic variables -->
-	<xs:complexType name="TAlgebraicVariables">
-		<xs:sequence>
-			<xs:element name="AlgebraicVariable" type="TAlgebraicVariable"
-				maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<!-- Structure element shared by Output, ContinuousStateDerivative, etc. -->
-	<xs:complexType name="TModelStructureElement">
-		<xs:sequence>
-			<xs:element name="Annotations" type="TAnnotations" minOccurs="0"/>
-		</xs:sequence>
-		<xs:attribute name="valueReference"   type="xs:unsignedInt" use="required"/>
-		<xs:attribute name="dependencies"     type="TValueReferenceList"/>
-		<xs:attribute name="dependenciesKind" type="TDependencyKindList"/>
+	<xs:complexType name="TVariableReference">
+		<xs:complexContent>
+			<xs:restriction base="fmi3Unknown">
+				<xs:sequence>
+					<xs:element ref="Annotations" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="valueReference" type="xs:unsignedInt" use="required">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Value reference of the variable in ModelVariables of the modelDescription.xml.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:complexContent>
 	</xs:complexType>
 
 	<!--
@@ -164,27 +117,13 @@
 		The Residual element is new.
 	-->
 	<xs:complexType name="TDaeModelStructure">
-		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Output"                    type="TModelStructureElement"/>
-			<xs:element name="ContinuousStateDerivative" type="TModelStructureElement"/>
-			<xs:element name="ClockedState"              type="TModelStructureElement"/>
-			<xs:element name="InitialUnknown"            type="TModelStructureElement"/>
-			<xs:element name="EventIndicator"            type="TModelStructureElement"/>
-			<xs:element name="Residual"                  type="TModelStructureElement"/>
-		</xs:choice>
-	</xs:complexType>
-
-	<!-- Annotations as defined by the core FMI XML schema -->
-	<xs:complexType name="TAnnotations">
-		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="Annotation">
-				<xs:complexType mixed="true">
-					<xs:sequence>
-						<xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-					<xs:attribute name="type" type="xs:normalizedString" use="required"/>
-				</xs:complexType>
-			</xs:element>
+		<xs:sequence>
+            <xs:element name="Output" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ContinuousStateDerivative" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ClockedState" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="InitialUnknown" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="EventIndicator" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Residual" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

@@ -52,7 +52,7 @@
 						<xs:attribute name="valueReference" type="xs:unsignedInt" use="required"/>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="AlgebraicVariables" minOccurs="0" maxOccurs="1">
+				<xs:element name="AlgebraicVariables">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="AlgebraicVariable" minOccurs="0" maxOccurs="unbounded">
@@ -63,7 +63,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="ModelStructure" minOccurs="0" maxOccurs="1">
+				<xs:element name="ModelStructure">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="Output" type="fmi3Unknown" minOccurs="0" maxOccurs="unbounded"/>

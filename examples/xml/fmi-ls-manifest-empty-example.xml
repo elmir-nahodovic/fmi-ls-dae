@@ -9,4 +9,8 @@
 
   <EnableDAE valueReference ="123"/>
 
+  <AlgebraicVariables/>
+
+  <ModelStructure/>
+
 </fmiDAEManifest>

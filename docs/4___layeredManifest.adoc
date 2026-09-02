@@ -4,37 +4,35 @@
 
 This layered standard requires the use of a layered standard manifest file and it shall be stored inside the FMU at the following path: `/extra/org.fmi-standard.fmi-ls-dae/fmi-ls-manifest.xml`.
 
-[Add figure here] shows the root element `fmi-ls-dae`.
+Several new elements are included as direct children of the root element in the layered standard manifest file to describe the DAE formulation.
 
-Three additional elements - <<EnableDAE>>, <<AlgebraicVariables>>, and <<ModelStructure>> - are included as direct children of the root element in the layered standard manifest file to describe the DAE formulation.
-
-.`fmi-ls-dae` child elements.
-[[table-schema-fmiModelDescription]]
+.`fmiDAEManifest` child elements.
+[[table-schema-fmiDAEManifest]]
 [cols="1,3",options="header"]
 |====
 |Element
 |Description
 
-|<<EnableDAE>>
+|<<EnableDAEParameter>>
 |Required element referencing the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in `modelDescription.xml` that enables DAE mode.
 
 |<<AlgebraicVariables>>
-|List of all <<AlgebraicVariable, algebraic variables>> exposed for the DAE formulation.
+|List of all <<AlgebraicVariables, algebraic variables>> exposed for the DAE formulation.
 
 |<<ModelStructure>>
 |Defines the structure of the DAE formulation for the model.
-Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[state], and the initial unknowns (the unknowns during *https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]*) are *re*-defined and overwrite the corresponding https://fmi-standard.org/docs/3.0.2/#ModelStructure[ModelStructure] present in the `modelDescription.xml`, with the addition of the  <<Residual, residuals>> element.
-The <<AlgebraicVariables,algebraic variables>> can now also be included as dependencies.
+Especially, the ordered lists of https://fmi-standard.org/docs/3.0.2/#output[outputs], continuous-time https://fmi-standard.org/docs/3.0.2/#state[states], and the initial unknowns (the unknowns during *https://fmi-standard.org/docs/3.0.2/#InitializationMode[InitializationMode]*) are *re*-defined and overwrite the corresponding https://fmi-standard.org/docs/3.0.2/#ModelStructure[ModelStructure] present in the `modelDescription.xml`, with the addition of the  <<Residual, residuals>> element.
+The <<AlgebraicVariables,algebraic variables>> can be included as dependencies, and can also be initial unknowns.
 
 |<<Annotations>>
 |Optional annotations for the top-level element.
 
 |====
 
-The XML attributes of `<fmi-ls-dae>` are:
+The XML attributes of `<fmiDAEManifest>` are:
 
-.`<fmi-ls-dae>` attribute details.
-[[table-schema-fmi-ls-dae-attributes]]
+.`<fmiDAEManifest>` attribute details.
+[[table-schema-fmiDAEManifest-attributes]]
 [cols="1,1,1,2",options="header"]
 |====
 |Attribute
@@ -43,28 +41,27 @@ The XML attributes of `<fmi-ls-dae>` are:
 |Description
 
 |`fmi-ls-name`
-|`\http://fmi-standard.org/fmi-ls-manifest`
+|`http://fmi-standard.org/fmi-ls-manifest`
 |`org.fmi-standard.fmi-ls-dae`
 |Name of the layered standard in reverse domain name notation.
 
 |`fmi-ls-version`
-|`\http://fmi-standard.org/fmi-ls-manifest`
-|`0.1.0`
+|`http://fmi-standard.org/fmi-ls-manifest`
+|`1.0.0-alpha.1`
 |Version of the layered standard. This layered standard uses semantic versioning, as defined in <<PW13>>.
 
 |`fmi-ls-description`
-|`\http://fmi-standard.org/fmi-ls-manifest`
+|`http://fmi-standard.org/fmi-ls-manifest`
 |`Layered standard for DAE support in FMI.`
 |String with a brief description of the layered standard that is suitable for display to users.
-
 |====
 
-=== Enabling DAE mode [[EnableDAE, `<EnableDAE>`]]
+=== Enabling DAE mode [[EnableDAEParameter, `<EnableDAEParameter>`]]
 
-The element <<EnableDAE>> references the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in the `modelDescription.xml` that enables DAE mode.
+The element <<EnableDAEParameter>> references the https://fmi-standard.org/docs/3.0.2/#structuralParameter[structural parameter] in the `modelDescription.xml` that enables DAE mode.
 See <<enable-dae-mode-variable>> for the full semantics and the calling sequences used to change the mode.
 
-.Attributes to <<EnableDAE>> element.
+.Attributes to <<EnableDAEParameter>> element.
 [[table-enable-dae-details]]
 [cols="1,5a", options="header"]
 |====
@@ -105,16 +102,21 @@ Each <<AlgebraicVariable>> has only one attribute defining the value reference.
 |The value reference for the algebraic variable present in the `ModelVariables` of the modelDescription.xml.
 |====
 
+NOTE: In the core Model Exchange standard there exists the API function *https://fmi-standard.org/docs/3.0.2/#fmi3GetNominalsOfContinuousStates[fmi3GetNominalsOfContinuousStates]*, which only holds for the continous time states. There is currently no extension of the API for fmi-ls-dae. The algebraic variable could still have a nominal value defined by the `nominal` attribute for variables under `ModelVariables` of the `modelDescription.xml`, but in this case the nominal is constant.
+
 === Model Structure [[ModelStructure,`<ModelStructure>`]]
 
 The structure of the model for the DAE-formulation is defined in element <<ModelStructure>>.
 It defines the <<model-dependencies,dependencies>> between variables.
 The <<ModelStructure>> element is extended with an additional element - <<Residual>> - and the optional dependencies can now include algebraic variables.
 
-An FMU that follows this layered standard must expose all residuals with the <<Residual>>.
+An FMU that follows this layered standard must expose all residuals using the <<Residual>> element.
 
-NOTE: The <<ModelStructure>> defined here extends the one from the core FMI standard.
-All elements defined there (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics, with the addition that each element's `dependencies` attribute may now also reference <<AlgebraicVariable, algebraic variables>>.
+The <<ModelStructure>> defined here extends the one from the core FMI standard.
+All elements defined in the core standard (`Output`, `ContinuousStateDerivative`, `ClockedState`, `InitialUnknown`, `EventIndicator`) retain their existing semantics in this manifest, with the additions that:
+
+* Each element's `dependencies` attribute may now also reference <<AlgebraicVariable, algebraic variables>>.
+* The `InitialUnknown` element may reference an algebraic variable.
 
 The <<ModelStructure>> element is extended with one additional element, <<Residual>>, described below.
 
@@ -127,23 +129,13 @@ The <<ModelStructure>> element is extended with one additional element, <<Residu
 
 |`Residual`
 |[[Residual,`<Residual>`]]
-Ordered list of residual equations (constraints).
-Each `<Residual>` contains one or more `<<Formulation>>` child elements.
-When a single `<Formulation>` is present, it defines the residual equation directly.
-When multiple `<Formulation>` elements are present within the same `<Residual>`, they represent the same constraint differentiated to successive orders.
-This grouping tells the importer that the equations are structurally related, which can e.g. be used to perform index reduction with dummy derivatives or projection methods.
-Note that each formulation inside one residual element must reference unique variables in the FMU.
-
+Ordered list of residual equations (constraints). Each residual element must reference a unique variable present in the `ModelVariables` of the `modelDescription.xml`. It is the importer's responsiblity to find the values of the <<AlgebraicVariables, algebraic variables>> such that the residuals are 0.
 The functional dependency is defined as: +
-latexmath:[{0 := \mathbf{f}_{\mathit{res}}(\mathbf{x}_c, \mathbf{z}_c, \mathbf{u}_c, t, \mathbf{p})}]
+latexmath:[{0 := \mathbf{f}_{\mathit{res}}(\mathbf{x}_c, \mathbf{a}_c, \mathbf{u}_c, t, \mathbf{p})}]
 |====
 
-==== Formulation [[Formulation, `<Formulation>`]]
-
-Each `<<Formulation>>` element within a `<<Residual>>` has the following attributes:
-
-.Attributes to `<<Formulation>>` element.
-[[table-formulation-details]]
+.Attributes to `<<Residual>>` element.
+[[table-residual-details]]
 [cols="1,5a", options="header"]
 |====
 |Attribute
@@ -152,15 +144,11 @@ Each `<<Formulation>>` element within a `<<Residual>>` has the following attribu
 |`valueReference`
 |The value reference of the residual variable latexmath:[{v_{\mathit{unknown}}}], which must be present in the `ModelVariables` element of the `modelDescription.xml`.
 
-|`index`
-|[[index-formulation]]
-Optional attribute indicating the DAE index of the original constraint, i.e., how many times this particular equation needs to be differentiated in order to solve for a particular derivative.
-
 |`dependencies`
 |[[model-dependencies]]
-Optional attribute defining the algebraic dependencies as a list of value references of the knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] that this formulation directly depends on.
+Optional attribute defining the algebraic dependencies as a list of value references of the knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] that this residual equation directly depends on.
 
-Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/docs/3.0.2/#ContinuousTimeMode[ContinuousTimeMode]* (ME) for `<<Formulation>>` elements are: +
+Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/docs/3.0.2/#ContinuousTimeMode[ContinuousTimeMode]* (ME) for `<<Residual>>` elements are: +
 
 * inputs (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#input[input]),
 
@@ -170,22 +158,18 @@ Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/do
 
 * parameters (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#parameter[parameter]),
 
-* algebraic variables (variables listed in the `<<AlgebraicVariables>>` element),
+* algebraic variables (variables listed in an `<<AlgebraicVariables>>` element),
 
 * https://fmi-standard.org/docs/3.0.2/#independent[independent] variable (usually time; https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#independent[independent]).
 
-If `dependencies` is not present, it must be assumed that the formulation depends on all knowns.
-If `dependencies` is present as an empty list, the formulation depends on none of the knowns.
-Otherwise the formulation depends on the knowns defined by the given value references.
+If `dependencies` is not present, it must be assumed that the residual depends on all knowns.
+If `dependencies` is present as an empty list, the residual depends on none of the knowns.
+Otherwise the residual depends on the knowns defined by the given value references.
 
 |`dependenciesKind`
 |See the description of https://fmi-standard.org/docs/3.0.2/#dependenciesKind[`dependenciesKind`] in the core FMI standard.
-TODO: Extend to help importer?
+
 |====
-
-=== Annotations
-
-NOTE: TODO
 
 ---
 
@@ -193,8 +177,10 @@ NOTE: TODO
 
 The partial derivative API functions https://fmi-standard.org/docs/3.0.2/#fmi3GetDirectionalDerivative[fmi3GetDirectionalDerivative] and https://fmi-standard.org/docs/3.0.2/#fmi3GetAdjointDerivative[fmi3GetAdjointDerivative] are used as defined in the core FMI standard, with the following extensions for DAE FMUs:
 
-* Algebraic variables (variables listed in `<<AlgebraicVariables>>`) could appear as knowns for any unknown.
-* When the unknown is a <<Formulation>> in a <<Residual>>(i.e., a residual variable), continuous state derivatives could additionally appear as knowns.
+* <<Residual, Residual>> variables can appear as unknowns.
+* <<AlgebraicVariable, Algebraic variables>> could appear as knowns for any unknown.
+
+---
 
 === Hello World DAE Example
 
@@ -238,6 +224,7 @@ Assume the FMU has these variables:
 [cols="1,1", options="header"]
 |====
 |Variable | valueReference
+|`enableDAEModeVariable` | 0
 |latexmath:[t] | 1
 |latexmath:[x_1] | 2
 |latexmath:[x_2] | 3
@@ -250,36 +237,32 @@ Assume the FMU has these variables:
 |latexmath:[F_3] | 10
 |====
 
-In this case `x_2` and `x_3` do not appear differentiated in any equations, hence they are classified as algebraic (element of `<<AlgebraicVariables>>`).
-An example of the `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
+In this case `x_2` and `x_3` do not appear differentiated in any equations, hence they are classified as algebraic (contained in an `<<AlgebraicVariable>>` element).
+An example of the `<<EnableDAEParameter>>`, `<<AlgebraicVariables>>` and `<<ModelStructure>>` elements would be:
 
 ```xml
+<EnableDAEParameter
+  valueReference="0"/>
 <AlgebraicVariables>
   <AlgebraicVariable valueReference="3"/> <!-- x_2 -->
   <AlgebraicVariable valueReference="4"/> <!-- x_3 -->
 </AlgebraicVariables>
 <ModelStructure>
-  <Residual> <!-- F1 -->
-    <Formulation
-      valueReference="8"
-      dependencies="5 3"
-      dependenciesKind="fixed fixed"/>
-  </Residual>
-  <Residual> <!-- F2 -->
-    <Formulation
-      valueReference="9"
-      dependencies="2 3 4"
-      dependenciesKind="fixed fixed fixed"/>
-  </Residual>
-  <Residual> <!-- F3 -->
-    <Formulation
-      valueReference="10"
-      dependencies="2 3 4"
-      dependenciesKind="fixed fixed fixed"/>
-  </Residual>
+  <Residual
+    valueReference="8"
+    dependencies="5 3"
+    dependenciesKind="fixed fixed"/> <!-- F1 -->
+  <Residual
+    valueReference="9"
+    dependencies="2 3 4"
+    dependenciesKind="fixed fixed fixed"/> <!-- F2 -->
+  <Residual
+    valueReference="10"
+    dependencies="2 3 4"
+    dependenciesKind="fixed fixed fixed"/> <!-- F3 -->
 </ModelStructure>
 ```
-NOTE: The derivatives of `x_1`, `x_2`, and `x_3` (`\dot{x_1}`, `\dot{x_2}`, `\dot{x_3}`) are still noted with the `derivative` attribute under the `ModelVariables` element, which gives the importer all the information they need to solve the equations.
+NOTE: The derivatives of `x_1`, `x_2`, and `x_3` (`\dot{x_1}`, `\dot{x_2}`, `\dot{x_3}`) are still noted with the `derivative` attribute under the `ModelVariables` element in the `modelDescription.xml`, which gives the importer all the information they need to solve the equations.
 
 ==== Hello World DAE - Semi-Explicit DAE
 
@@ -318,6 +301,7 @@ Assume the FMU has the following variables:
 [cols="1,1", options="header"]
 |====
 |Variable | valueReference
+|`enableDAEModeVariable` | 0
 |latexmath:[t] | 1
 |latexmath:[x] | 2
 |latexmath:[y_1] | 3
@@ -331,28 +315,26 @@ This case contains the same algebraic variables.
 However this time the the derivative of `x` is given in explicit form in the `ModelStructure`:
 
 ```xml
+
+<EnableDAEParameter
+  valueReference="0"/>
 <AlgebraicVariables>
   <AlgebraicVariable valueReference="3"/> <!-- y1 -->
   <AlgebraicVariable valueReference="4"/> <!-- y2 -->
 </AlgebraicVariables>
-
 <ModelStructure>
   <ContinuousStateDerivative
     valueReference="5"
     dependencies="3"
     dependenciesKind="fixed"/> <!-- dot(x) = y1 -->
-  <Residual> <!-- g1: y1 + 2*y2 - x = 0 -->
-    <Formulation
-      valueReference="6"
-      dependencies="2 3 4"
-      dependenciesKind="fixed fixed fixed"/>
-  </Residual>
-  <Residual> <!-- g2: y1 - 3*y2 - 2*x = 0 -->
-    <Formulation
-      valueReference="7"
-      dependencies="2 3 4"
-      dependenciesKind="fixed fixed fixed"/>
-  </Residual>
+  <Residual
+    valueReference="6"
+    dependencies="2 3 4"
+    dependenciesKind="fixed fixed fixed"/> <!-- g1: y1 + 2*y2 - x = 0 -->
+  <Residual
+    valueReference="7"
+    dependencies="2 3 4"
+    dependenciesKind="fixed fixed fixed"/> <!-- g2: y1 - 3*y2 - 2*x = 0 -->
 </ModelStructure>
 ```
 
@@ -393,128 +375,10 @@ This would correspond to the regular ODE ModelStructure:
 
 ```xml
 <ModelStructure>
-  <ContinuousStateDerivative <!-- dot(x) = 7/5 * x -->
+  <!-- dot(x) = 7/5 * x -->
+  <ContinuousStateDerivative
     valueReference="5"
     dependencies="2"
     dependenciesKind="fixed"/>
 </ModelStructure>
 ```
-
-=== Example 2 (differentiated formulations)
-
-Consider the following index 2 DAE system:
-
-latexmath:[r_1 = C_1\frac{dx_1}{dt} + y = 0]
-
-latexmath:[r_2 = C_2\frac{dx_2}{dt} - y + 1 = 0]
-
-latexmath:[r_3 = x_1 - x_2 = 0]
-
-Assume it is exported as a DAE FMU with the following variables:
-
-[cols="1,1", options="header"]
-|====
-|Variable | valueReference
-|latexmath:[x_1] | 1
-|latexmath:[x_2] | 2
-|latexmath:[y] | 3
-|latexmath:[\frac{dx_1}{dt}] | 4
-|latexmath:[\frac{dx_2}{dt}] | 5
-|latexmath:[r_1] | 6
-|latexmath:[r_2] | 7
-|latexmath:[r_3] | 8
-|latexmath:[\frac{dr_3}{dt}] | 9
-|====
-
-**Case 1:**
-No structural analysis.
-The importer is responsible to figure out how to solve the system:
-
-```xml
-<ModelStructure>
-  <Residual> <!-- r1 -->
-    <Formulation
-      valueReference="6"
-      dependencies="3 4"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-  <Residual> <!-- r2 -->
-    <Formulation
-      valueReference="7"
-      dependencies="3 5"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-  <Residual> <!-- r3 -->
-    <Formulation
-      valueReference="8"
-      dependencies="1 2"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-</ModelStructure>
-```
-
-**Case 2:**
-The FMU additionally indicates that latexmath:[r_3] is a constraint of index 2, i.e., it needs to be be differentiated twice to obtain an index 1 system.
-This gives the importer structural information to know to apply a solver able to handle index 2 problems:
-
-```xml
-<ModelStructure>
-  <Residual> <!-- r1 -->
-    <Formulation
-      valueReference="6"
-      dependencies="3 4"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-  <Residual> <!-- r2 -->
-    <Formulation
-      valueReference="7"
-      dependencies="3 5"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-  <Residual> <!-- r3, index=2 signals this constraint needs 2 differentiations -->
-    <Formulation
-      index="2"
-      valueReference="8"
-      dependencies="1 2"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-</ModelStructure>
-```
-
-**Case 3:**
-The FMU exposes both latexmath:[r_3] and its time derivative latexmath:[\dot{r}_3] grouped within the same `<Residual>`, which indicates that these are the original constraint and its differentiated form.
-The importer can use this grouping to apply the dummy derivatives algorithm or use latexmath:[r_3] as a drift-correction projection when integrating the index 1 formulation:
-
-latexmath:[r_3 = x_1 - x_2 = 0]
-
-latexmath:[\dot{r}_3 = \frac{dx_1}{dt} - \frac{dx_2}{dt} = 0]
-```xml
-<ModelStructure>
-  <Residual> <!-- r1 -->
-    <Formulation
-      valueReference="6"
-      dependencies="3 4"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-  <Residual> <!-- r2 -->
-    <Formulation
-      valueReference="7"
-      dependencies="3 5"
-      dependenciesKind="dependent dependent"/>
-  </Residual>
-  <Residual> <!-- r3 and its derivative, grouped as related formulations -->
-    <Formulation
-      index="2"
-      valueReference="8"
-      dependencies="1 2"
-      dependenciesKind="dependent dependent"/> <!-- r3 -->
-    <Formulation
-      index="1"
-      valueReference="9"
-      dependencies="4 5"
-      dependenciesKind="dependent dependent"/> <!-- der(r3) -->
-  </Residual>
-</ModelStructure>
-```
-
-The API for partial derivative, `GetDirectionalDerivative` and/or `GetAdjointDerivative` could be used with this structure to apply the dummy derivatives algorithm, or the index 2 constraint can serve as a projection constraint when integrating the index 1 formulation.

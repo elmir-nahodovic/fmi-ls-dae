@@ -154,8 +154,6 @@ Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/do
 
 * continuous states,
 
-* continuous state derivatives,
-
 * parameters (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#parameter[parameter]),
 
 * algebraic variables (variables listed in an `<<AlgebraicVariables>>` element),

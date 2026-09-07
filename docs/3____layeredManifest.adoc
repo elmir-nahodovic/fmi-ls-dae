@@ -259,7 +259,7 @@ with
 
 [latexmath]
 ++++
-\mathbf{f}_{\mathit{res}}(\mathbf{x}_c,\mathbf{a}_c,\mathbf{u}_c,\mathbf{p},t)
+r := \mathbf{f}_{\mathit{res}}(\mathbf{x}_c,\mathbf{a}_c,\mathbf{u}_c,\mathbf{p},t)
 =
 y_1 + y_2 + y_3 - 1
 ++++
@@ -317,11 +317,11 @@ Assume the FMU has the following variables:
 
 |latexmath:[y_3] |6
 
-|latexmath:[f_{\mathit{res}}] |7
+|latexmath:[r] |7
 
 |====
 
-Here, latexmath:[y_1] and latexmath:[y_2] are the components of latexmath:[\mathbf{x}_c], while latexmath:[y_3] is the single component of latexmath:[\mathbf{a}_c]. The variable with value reference `7` provides the residual latexmath:[\mathbf{f}_{\mathit{res}}].
+Here, latexmath:[y_1] and latexmath:[y_2] are the components of latexmath:[\mathbf{x}_c], while latexmath:[y_3] is the single component of latexmath:[\mathbf{a}_c]. The residual latexmath:[\mathbf{f}_{\mathit{res}}] is represented by the variable latexmath:[r].
 
 The DAE-specific manifest elements are:
 

@@ -148,7 +148,7 @@ latexmath:[{0 := \mathbf{f}_{\mathit{res}}(\mathbf{x}_c, \mathbf{a}_c, \mathbf{u
 |[[model-dependencies]]
 Optional attribute defining the algebraic dependencies as a list of value references of the knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] that this residual equation directly depends on.
 
-Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/docs/3.0.2/#ContinuousTimeMode[ContinuousTimeMode]* (ME) for `<<Residual>>` elements are: +
+Knowns latexmath:[{\mathbf{v}_{\mathit{known}}}] in *https://fmi-standard.org/docs/3.0.2/#ContinuousTimeMode[Continuous-Time Mode]* (ME) for `<<Residual>>` elements are: +
 
 * inputs (variables with https://fmi-standard.org/docs/3.0.2/#causality[causality] = https://fmi-standard.org/docs/3.0.2/#input[input]),
 

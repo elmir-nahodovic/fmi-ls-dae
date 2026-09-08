@@ -116,7 +116,7 @@ The <<ModelStructure>> defined here extends the one from the core FMI standard.
 All elements defined in the core standard (https://fmi-standard.org/docs/3.0.2/#Output[`<Output>`], https://fmi-standard.org/docs/3.0.2/#ContinuousStateDerivative[`<ContinuousStateDerivative>`], https://fmi-standard.org/docs/3.0.2/#ClockedState[`<ClockedState>`], https://fmi-standard.org/docs/3.0.2/#InitialUnknown[`<InitialUnknown>`], https://fmi-standard.org/docs/3.0.2/#EventIndicator[`<EventIndicator>`]) retain their existing semantics in this manifest, with the additions that:
 
 * Each element's `dependencies` attribute may now also reference <<AlgebraicVariable, algebraic variables>>.
-* The https://fmi-standard.org/docs/3.0.2/#InitialUnknown[`<InitialUnknown>`] element may reference an <<AlgebraicVariable, algebraic variables>>.
+* The https://fmi-standard.org/docs/3.0.2/#InitialUnknown[`<InitialUnknown>`] element is expanded so that <<AlgebraicVariable, algebraic variables>> can be included as unknowns.
 
 The <<ModelStructure>> element is extended with one additional element, <<Residual>>, described below.
 
